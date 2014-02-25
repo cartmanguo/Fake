@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>50A9D477-421A-4052-82D8-83AD27E2293C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FakeInstagram</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B84043E1-B840-40EB-8221-C5126332C956</key>
+		<string>https://github.com/cartmanguo/Fake.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FakeInstagram/FakeInstagram.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B84043E1-B840-40EB-8221-C5126332C956</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/cartmanguo/Fake.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B84043E1-B840-40EB-8221-C5126332C956</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B84043E1-B840-40EB-8221-C5126332C956</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Fake</string>
+		</dict>
+	</array>
+</dict>
+</plist>
