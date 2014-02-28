@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PersonProfileCell : UITableViewCell
+@interface PersonProfileCell: UITableViewCell
 {
     
 }
@@ -16,5 +16,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *followedLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *tweetCountLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *avatarView;
+@property (strong, nonatomic) IBOutlet UIImageView *messageView;
 @end

@@ -39,9 +39,9 @@
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColCell"];
     IGManager *igManager = [IGManager sharedInstance];
     igManager.delegate = self;
-    NSString *token = [igManager token];
-    [igManager getMyInfo:token];
-    [igManager getMediaFromSelf:token maxNum:15];
+    //NSString *token = [igManager token];
+    [igManager startOperationWithRequesType:GET_PERSONAL_INFO];
+    [igManager startOperationWithRequesType:GET_SELF_TWEETS];
     // Do any additional setup after loading the view.
 }
 
@@ -87,6 +87,7 @@
         UILabel *tweetLabel = (UILabel *)[view viewWithTag:93];
         if(_user)
         {
+            NSLog(@"followed:%d",_user.followed);
             [avatarView setImageWithURL:[NSURL URLWithString:_user.avatarUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
             followedLabel.text = [NSString stringWithFormat:@"%d",_user.followed];
             followersLabel.text = [NSString stringWithFormat:@"%d",_user.followers];
@@ -132,8 +133,8 @@
     IGManager *igManager = [IGManager sharedInstance];
     igManager.delegate = self;
     NSString *token = [igManager token];
-    [igManager getMyInfo:token];
-    [igManager getMediaFromSelf:token maxNum:15];
+    [igManager startOperationWithRequesType:GET_PERSONAL_INFO];
+    [igManager startOperationWithRequesType:GET_SELF_TWEETS];
     [self.collectionView reloadData];
 }
 
@@ -150,9 +151,9 @@
 - (void)loadMoreData
 {
     IGManager *manager = [IGManager sharedInstance];
-    if (manager.hasMoreData) {
+    if (manager.nextUrl) {
         loading = YES;
-        [manager getMediaFromNextUrl:manager.nextUrl];
+        [manager startOperationWithRequesType:GET_MORE_SELF_TWEETS];
     }
     else
     {

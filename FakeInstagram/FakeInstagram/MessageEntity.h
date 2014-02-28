@@ -7,10 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Comments.h"
+#import "Users.h"
 @interface MessageEntity : NSObject
 {
     
 }
+@property (strong, nonatomic) NSString *tweetMessage;
 @property (strong, nonatomic) NSString *imageUrl;
+@property (strong, nonatomic) NSString *userName;
+@property (assign, nonatomic) NSInteger numberOfComments;
+@property (strong, nonatomic) NSMutableArray *comments;
+@property (strong, nonatomic) NSMutableArray *commentUsers;
+@property (strong, nonatomic) Users *user;
 @end

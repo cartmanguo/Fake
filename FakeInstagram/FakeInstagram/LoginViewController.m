@@ -68,7 +68,7 @@
             self.token = strAccessToken;
             [[NSUserDefaults standardUserDefaults] setObject:_token forKey:kToken];
             //[self loadRequestForMediaData];
-            [self presentViewController:[[MainPageViewController alloc] init] animated:YES completion:nil];
+            //[self presentViewController:[[MainPageViewController alloc] init] animated:YES completion:nil];
         }
         return NO;
     }

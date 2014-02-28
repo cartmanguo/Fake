@@ -19,6 +19,10 @@
 		F5A7237418BC47150075A471 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5A7236818BC47150075A471 /* grayArrow@2x.png */; };
 		F5A7237518BC47150075A471 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F5A7236918BC47150075A471 /* whiteArrow.png */; };
 		F5A7237618BC47150075A471 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5A7236A18BC47150075A471 /* whiteArrow@2x.png */; };
+		F5A80E4018BD897A00FAA49F /* Comments.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A80E3F18BD897A00FAA49F /* Comments.m */; };
+		F5A9FBEE18C06C690034386A /* TweetContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A9FBED18C06C690034386A /* TweetContentCell.m */; };
+		F5A9FBF118C06D740034386A /* InstagramMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A9FBF018C06D740034386A /* InstagramMessageCell.m */; };
+		F5A9FBF318C085CA0034386A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A9FBF218C085CA0034386A /* QuartzCore.framework */; };
 		F5AB7FE918B6E5290037D83D /* IGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FE818B6E5290037D83D /* IGManager.m */; };
 		F5AB7FFE18B6EC880037D83D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FEC18B6EC880037D83D /* AFHTTPRequestOperation.m */; };
 		F5AB7FFF18B6EC880037D83D /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FEE18B6EC880037D83D /* AFHTTPRequestOperationManager.m */; };
@@ -64,6 +68,9 @@
 		F5AB9C2118B5EDA2001B7EA2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5AB9C1F18B5EDA2001B7EA2 /* InfoPlist.strings */; };
 		F5AB9C2318B5EDA2001B7EA2 /* FakeInstagramTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB9C2218B5EDA2001B7EA2 /* FakeInstagramTests.m */; };
 		F5AB9C2E18B5EE1A001B7EA2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB9C2D18B5EE1A001B7EA2 /* LoginViewController.m */; };
+		F5CF338318BC987C00EFB4A4 /* JSONDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338218BC987C00EFB4A4 /* JSONDataParser.m */; };
+		F5CF338618BC98A200EFB4A4 /* PersonInfoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338518BC98A200EFB4A4 /* PersonInfoParser.m */; };
+		F5CF338918BC98C400EFB4A4 /* TweetItemsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338818BC98C400EFB4A4 /* TweetItemsParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +100,13 @@
 		F5A7236818BC47150075A471 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		F5A7236918BC47150075A471 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		F5A7236A18BC47150075A471 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
+		F5A80E3E18BD897A00FAA49F /* Comments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comments.h; sourceTree = "<group>"; };
+		F5A80E3F18BD897A00FAA49F /* Comments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comments.m; sourceTree = "<group>"; };
+		F5A9FBEC18C06C690034386A /* TweetContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetContentCell.h; sourceTree = "<group>"; };
+		F5A9FBED18C06C690034386A /* TweetContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetContentCell.m; sourceTree = "<group>"; };
+		F5A9FBEF18C06D740034386A /* InstagramMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramMessageCell.h; sourceTree = "<group>"; };
+		F5A9FBF018C06D740034386A /* InstagramMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramMessageCell.m; sourceTree = "<group>"; };
+		F5A9FBF218C085CA0034386A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F5AB7FE418B6E2420037D83D /* InstagramKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramKey.h; sourceTree = "<group>"; };
 		F5AB7FE718B6E5290037D83D /* IGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGManager.h; sourceTree = "<group>"; };
 		F5AB7FE818B6E5290037D83D /* IGManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGManager.m; sourceTree = "<group>"; };
@@ -172,6 +186,12 @@
 		F5AB9C2C18B5EE1A001B7EA2 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		F5AB9C2D18B5EE1A001B7EA2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		F5AB9C2F18B5EE3D001B7EA2 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		F5CF338118BC987C00EFB4A4 /* JSONDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONDataParser.h; sourceTree = "<group>"; };
+		F5CF338218BC987C00EFB4A4 /* JSONDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONDataParser.m; sourceTree = "<group>"; };
+		F5CF338418BC98A200EFB4A4 /* PersonInfoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonInfoParser.h; sourceTree = "<group>"; };
+		F5CF338518BC98A200EFB4A4 /* PersonInfoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonInfoParser.m; sourceTree = "<group>"; };
+		F5CF338718BC98C400EFB4A4 /* TweetItemsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetItemsParser.h; sourceTree = "<group>"; };
+		F5CF338818BC98C400EFB4A4 /* TweetItemsParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetItemsParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +199,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5A9FBF318C085CA0034386A /* QuartzCore.framework in Frameworks */,
 				F5AB800E18B6EF0B0037D83D /* MobileCoreServices.framework in Frameworks */,
 				F5AB800C18B6EE6D0037D83D /* Security.framework in Frameworks */,
 				F5AB800918B6EE2D0037D83D /* CFNetwork.framework in Frameworks */,
@@ -239,6 +260,27 @@
 				F5A7236A18BC47150075A471 /* whiteArrow@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F5A80E8A18BDBBFE00FAA49F /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				F5AB7FE718B6E5290037D83D /* IGManager.h */,
+				F5AB7FE818B6E5290037D83D /* IGManager.m */,
+				F5CF338118BC987C00EFB4A4 /* JSONDataParser.h */,
+				F5CF338218BC987C00EFB4A4 /* JSONDataParser.m */,
+				F5CF338418BC98A200EFB4A4 /* PersonInfoParser.h */,
+				F5CF338518BC98A200EFB4A4 /* PersonInfoParser.m */,
+				F5CF338718BC98C400EFB4A4 /* TweetItemsParser.h */,
+				F5CF338818BC98C400EFB4A4 /* TweetItemsParser.m */,
+				F5AB801A18B7233D0037D83D /* Users.h */,
+				F5AB801B18B7233D0037D83D /* Users.m */,
+				F5AB803918B74B9B0037D83D /* MessageEntity.h */,
+				F5AB803A18B74B9B0037D83D /* MessageEntity.m */,
+				F5A80E3E18BD897A00FAA49F /* Comments.h */,
+				F5A80E3F18BD897A00FAA49F /* Comments.m */,
+			);
+			name = DataModel;
 			sourceTree = "<group>";
 		};
 		F5AB7FEA18B6EC880037D83D /* AFNetworking */ = {
@@ -314,6 +356,7 @@
 		F5AB9BF618B5EDA2001B7EA2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5A9FBF218C085CA0034386A /* QuartzCore.framework */,
 				F5AB800D18B6EF0B0037D83D /* MobileCoreServices.framework */,
 				F5AB800B18B6EE6D0037D83D /* Security.framework */,
 				F5AB800718B6EE2D0037D83D /* CFNetwork.framework */,
@@ -336,6 +379,8 @@
 				F5AB9C0618B5EDA2001B7EA2 /* AppDelegate.h */,
 				F5AB9C0718B5EDA2001B7EA2 /* AppDelegate.m */,
 				F5AB9C0918B5EDA2001B7EA2 /* Main.storyboard */,
+				F5A9FBEF18C06D740034386A /* InstagramMessageCell.h */,
+				F5A9FBF018C06D740034386A /* InstagramMessageCell.m */,
 				F5AB9C0C18B5EDA2001B7EA2 /* ViewController.h */,
 				F5AB9C0D18B5EDA2001B7EA2 /* ViewController.m */,
 				F5AB9C2C18B5EE1A001B7EA2 /* LoginViewController.h */,
@@ -346,12 +391,9 @@
 				F5AB801518B701A40037D83D /* ProfileViewController.m */,
 				F5AB9C2F18B5EE3D001B7EA2 /* Constants.h */,
 				F5AB7FE418B6E2420037D83D /* InstagramKey.h */,
-				F5AB7FE718B6E5290037D83D /* IGManager.h */,
-				F5AB7FE818B6E5290037D83D /* IGManager.m */,
-				F5AB801A18B7233D0037D83D /* Users.h */,
-				F5AB801B18B7233D0037D83D /* Users.m */,
-				F5AB803918B74B9B0037D83D /* MessageEntity.h */,
-				F5AB803A18B74B9B0037D83D /* MessageEntity.m */,
+				F5A80E8A18BDBBFE00FAA49F /* DataModel */,
+				F5A9FBEC18C06C690034386A /* TweetContentCell.h */,
+				F5A9FBED18C06C690034386A /* TweetContentCell.m */,
 				F5AB801718B71DFA0037D83D /* PersonProfileCell.h */,
 				F5AB801818B71DFA0037D83D /* PersonProfileCell.m */,
 				F5AB803C18B7579D0037D83D /* GallaryCell.h */,
@@ -509,12 +551,16 @@
 				F5AB802F18B744790037D83D /* AFNetworkActivityIndicatorManager.m in Sources */,
 				F5AB803318B744790037D83D /* UIImageView+AFNetworking.m in Sources */,
 				F5AB800118B6EC880037D83D /* AFNetworkReachabilityManager.m in Sources */,
+				F5A80E4018BD897A00FAA49F /* Comments.m in Sources */,
 				F5AB803018B744790037D83D /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				F5AB803618B744790037D83D /* UIWebView+AFNetworking.m in Sources */,
 				F5AB800618B6EC880037D83D /* AFURLSessionManager.m in Sources */,
 				F5A7236E18BC47150075A471 /* PullTableView.m in Sources */,
+				F5CF338318BC987C00EFB4A4 /* JSONDataParser.m in Sources */,
+				F5CF338918BC98C400EFB4A4 /* TweetItemsParser.m in Sources */,
 				F5AB800418B6EC880037D83D /* AFURLRequestSerialization.m in Sources */,
 				F5A7236D18BC47150075A471 /* MessageInterceptor.m in Sources */,
+				F5A9FBF118C06D740034386A /* InstagramMessageCell.m in Sources */,
 				F5AB803B18B74B9B0037D83D /* MessageEntity.m in Sources */,
 				F5AB803118B744790037D83D /* UIAlertView+AFNetworking.m in Sources */,
 				F5A7236C18BC47150075A471 /* LoadMoreTableFooterView.m in Sources */,
@@ -530,6 +576,8 @@
 				F5A7236B18BC47150075A471 /* EGORefreshTableHeaderView.m in Sources */,
 				F5AB800218B6EC880037D83D /* AFSecurityPolicy.m in Sources */,
 				F5AB9C0418B5EDA2001B7EA2 /* main.m in Sources */,
+				F5CF338618BC98A200EFB4A4 /* PersonInfoParser.m in Sources */,
+				F5A9FBEE18C06C690034386A /* TweetContentCell.m in Sources */,
 				F5AB803E18B7579D0037D83D /* GallaryCell.m in Sources */,
 				F5AB803518B744790037D83D /* UIRefreshControl+AFNetworking.m in Sources */,
 				F5AB7FE918B6E5290037D83D /* IGManager.m in Sources */,

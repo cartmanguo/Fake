@@ -17,6 +17,17 @@
 
 //http://instagram.com/developer/endpoints/
 
+#define DATA_KEY @"data"
+#define PERSON_INFO_KEY_COUNT @"counts"
+#define PERSON_INFO_KEY_FOLLOWER @"followed_by"
+#define PERSON_INFO_KEY_FOLLOWING @"follows"
+#define PERSON_INFO_KEY_TWEETCOUNT @"media"
+#define PERSON_INFO_KEY_NAME @"username"
+#define PERSON_INFO_KEY_FULL_NAME @"full_name"
+#define PERSON_INFO_KEY_ID @"id"
+#define PERSON_INFO_KEY_PHOTOURL @"profile_picture"
+#define PERSON_INFO_KEY_WEBSITE @"website"
+
 #define INSTAGRAM_APP_ID @"30afd0af659e4d73874176c22ff18328"
 #define INSTAGRAMSESSIONURL @"INSTAGRAMSESSIONURL"
 #define BASE_URL @"https://api.instagram.com/v1"

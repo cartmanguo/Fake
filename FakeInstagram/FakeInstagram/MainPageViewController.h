@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "IGManager.h"
+#import "TweetContentCell.h"
+#import "UIImageView+AFNetworking.h"
+#import <QuartzCore/QuartzCore.h>
+#import "EGORefreshTableHeaderView.h"
+#import "LoadMoreTableFooterView.h"
 
-@interface MainPageViewController : UIViewController
-
+@interface MainPageViewController : UITableViewController<ParsePersonInfoDelegate,EGORefreshTableHeaderDelegate,LoadMoreTableFooterDelegate,UIScrollViewDelegate>
+{
+    LoadMoreTableFooterView *loadMoreFooter;
+    EGORefreshTableHeaderView *refreshHeader;
+}
+@property (strong, nonatomic) NSMutableArray *followedTweets;
 @end

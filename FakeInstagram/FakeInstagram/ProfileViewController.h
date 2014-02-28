@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "IGManager.h"
-#import "PersonProfileCell.h"
 #import "GallaryCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "LoadMoreTableFooterView.h"
