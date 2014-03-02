@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSString *imageUrl;
 @property (strong, nonatomic) NSString *userName;
 @property (assign, nonatomic) NSInteger numberOfComments;
+@property (assign, nonatomic) NSInteger numberOfLikes;
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (strong, nonatomic) NSMutableArray *commentUsers;
 @property (strong, nonatomic) Users *user;

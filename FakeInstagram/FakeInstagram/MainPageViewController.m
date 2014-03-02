@@ -8,6 +8,7 @@
 
 #import "MainPageViewController.h"
 #import "PersonProfileCell.h"
+#import "CellHeightCal.h"
 
 @interface MainPageViewController ()
 
@@ -27,6 +28,7 @@
 - (void)viewDidLoad
 {
 	// Do any additional setup after loading the view.
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     self.title = @"Tweets!";
     IGManager *manager = [IGManager sharedInstance];
     manager.delegate = self;
@@ -38,8 +40,8 @@
     refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0, -44, self.tableView.frame.size.width, 44)];
     refreshHeader.backgroundColor = [UIColor clearColor];
     refreshHeader.delegate = self;
-    [self.tableView addSubview:loadMoreFooter];
-    [self.tableView addSubview:refreshHeader];
+    //[self.tableView addSubview:loadMoreFooter];
+    //[self.tableView addSubview:refreshHeader];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -54,20 +56,97 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 350.0f;
+//    return 350.0;
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    MessageEntity *entity = [_followedTweets objectAtIndex:indexPath.section];
+    return [CellHeightCal calculateCellHeightWithMessage:entity andComments:entity.comments];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TweetContentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell"];
+    static NSString *idf = @"MessageCell";
+    TweetContentCell *cell = [tableView dequeueReusableCellWithIdentifier:idf];
+
     if(_followedTweets)
     {
         MessageEntity *entity = [_followedTweets objectAtIndex:indexPath.section];
-        NSLog(@"tweet:%@",entity.tweetMessage);
-        [cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+        //NSLog(@"tweet:%@",entity.tweetMessage);
+        UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
+        [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+        [cell addSubview:tweetImageView];
+        //[cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
         //Comments *comment = [entity.comments objectAtIndex:indexPath.row];
+        
+        //message
+        if ([entity.tweetMessage length] > 0)
+        {
+            UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300, 320, 40)];
+            [cell addSubview:messageLabel];
+            messageLabel.numberOfLines = 0;
+            messageLabel.font = [UIFont systemFontOfSize:12];
+            messageLabel.text = entity.tweetMessage;
+            //likes
+            if(entity.numberOfLikes > 0)
+            {
+                UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40, 320, 20)];
+                likeLabel.numberOfLines = 0;
+                likeLabel.font = [UIFont systemFontOfSize:12];
+                likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
+                [cell addSubview:likeLabel];
+                if([entity.comments count] == 1)
+                {
+                    Comments *comment = [entity.comments objectAtIndex:0];
+                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20, 320, 40)];
+                    commentLabel1.numberOfLines = 0;
+                    commentLabel1.font = [UIFont systemFontOfSize:12];
+                    commentLabel1.text = comment.commentContent;
+                    [cell addSubview:commentLabel1];
+                }
+                else if ([entity.comments count] == 2)
+                {
+                    for (int i = 0; i<=1; i++)
+                    {
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20*(i+1), 320, 40)];
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:12];
+                        commentLabel1.text = comment.commentContent;
+                        [cell addSubview:commentLabel1];
+                    }
+                }
+                else if ([entity.comments count] >= 3)
+                {
+                    for (int i = 0; i<=2; i++)
+                    {
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20*(i+1), 320, 40)];
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:12];
+                        NSLog(@"comment:%@",comment.commentContent);
+                        commentLabel1.text = comment.commentContent;
+                        [cell addSubview:commentLabel1];
+                    }
+                }
+
+            }
+            //no likes
+            else
+            {
+                
+            }
+        }
+        else
+        {
+            if(entity.numberOfLikes > 0)
+            {
+                
+            }
+        }
+        
         cell.messageLabel.text = entity.tweetMessage;
+        cell.likesLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
     }
+    loadMoreFooter.frame = CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height);
     return cell;
 }
 
