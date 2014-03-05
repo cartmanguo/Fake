@@ -27,6 +27,7 @@
     int tweetCount = [allTweets count];
     for(int i = 0; i < tweetCount; i++)
     {
+        NSMutableArray *comments = [NSMutableArray array];
         MessageEntity *entity = [[MessageEntity alloc] init];
 
         NSDictionary *singleTweetInfo = [allTweets objectAtIndex:i];
@@ -68,9 +69,9 @@
             comment.userName = userName;
             comment.user_picUrl = profilePicUrl;
             comment.commentContent = commentContent;
-            [_comments addObject:comment];
+            [comments addObject:comment];
         }
-        entity.comments = _comments;
+        entity.comments = comments;
         [_tweets addObject:entity];
     }
     

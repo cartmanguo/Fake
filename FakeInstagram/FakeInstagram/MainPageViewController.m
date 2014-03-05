@@ -64,87 +64,91 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *idf = @"MessageCell";
+    NSString *idf = [NSString stringWithFormat:@"Cell%d",indexPath.section];
     TweetContentCell *cell = [tableView dequeueReusableCellWithIdentifier:idf];
-
-    if(_followedTweets)
+    if(cell == nil)
     {
-        MessageEntity *entity = [_followedTweets objectAtIndex:indexPath.section];
-        //NSLog(@"tweet:%@",entity.tweetMessage);
-        UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
-        [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-        [cell addSubview:tweetImageView];
-        //[cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-        //Comments *comment = [entity.comments objectAtIndex:indexPath.row];
-        
-        //message
-        if ([entity.tweetMessage length] > 0)
+        cell = [[TweetContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idf];
+        if(_followedTweets)
         {
-            UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300, 320, 40)];
-            [cell addSubview:messageLabel];
-            messageLabel.numberOfLines = 0;
-            messageLabel.font = [UIFont systemFontOfSize:12];
-            messageLabel.text = entity.tweetMessage;
-            //likes
-            if(entity.numberOfLikes > 0)
+            MessageEntity *entity = [_followedTweets objectAtIndex:indexPath.section];
+            //NSLog(@"tweet:%@",entity.tweetMessage);
+            UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
+            [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+            [cell addSubview:tweetImageView];
+            //[cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+            //Comments *comment = [entity.comments objectAtIndex:indexPath.row];
+            
+            //message
+            if ([entity.tweetMessage length] > 0)
             {
-                UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40, 320, 20)];
-                likeLabel.numberOfLines = 0;
-                likeLabel.font = [UIFont systemFontOfSize:12];
-                likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
-                [cell addSubview:likeLabel];
-                if([entity.comments count] == 1)
+                UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300, 320, 30)];
+                [cell addSubview:messageLabel];
+                messageLabel.numberOfLines = 0;
+                messageLabel.font = [UIFont systemFontOfSize:12];
+                messageLabel.text = entity.tweetMessage;
+                //likes
+                if(entity.numberOfLikes > 0)
                 {
-                    Comments *comment = [entity.comments objectAtIndex:0];
-                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20, 320, 40)];
-                    commentLabel1.numberOfLines = 0;
-                    commentLabel1.font = [UIFont systemFontOfSize:12];
-                    commentLabel1.text = comment.commentContent;
-                    [cell addSubview:commentLabel1];
-                }
-                else if ([entity.comments count] == 2)
-                {
-                    for (int i = 0; i<=1; i++)
+                    UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+30, 320, 20)];
+                    likeLabel.numberOfLines = 0;
+                    likeLabel.font = [UIFont systemFontOfSize:12];
+                    likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
+                    [cell addSubview:likeLabel];
+                    if([entity.comments count] == 1)
                     {
-                        Comments *comment = [entity.comments objectAtIndex:i];
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20*(i+1), 320, 40)];
+                        Comments *comment = [entity.comments objectAtIndex:0];
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+30+20, 320, 40)];
                         commentLabel1.numberOfLines = 0;
                         commentLabel1.font = [UIFont systemFontOfSize:12];
-                        commentLabel1.text = comment.commentContent;
+                        commentLabel1.text = [NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent];
                         [cell addSubview:commentLabel1];
                     }
-                }
-                else if ([entity.comments count] >= 3)
-                {
-                    for (int i = 0; i<=2; i++)
+                    else if ([entity.comments count] == 2)
                     {
-                        Comments *comment = [entity.comments objectAtIndex:i];
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20*(i+1), 320, 40)];
-                        commentLabel1.numberOfLines = 0;
-                        commentLabel1.font = [UIFont systemFontOfSize:12];
-                        NSLog(@"comment:%@",comment.commentContent);
-                        commentLabel1.text = comment.commentContent;
-                        [cell addSubview:commentLabel1];
+                        for (int i = 0; i<=1; i++)
+                        {
+                            Comments *comment = [entity.comments objectAtIndex:i];
+                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+40+20*(i+1), 320, 40)];
+                            commentLabel1.numberOfLines = 0;
+                            commentLabel1.font = [UIFont systemFontOfSize:12];
+                            commentLabel1.text = [NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent];
+                            [cell addSubview:commentLabel1];
+                        }
                     }
+                    else if ([entity.comments count] >= 3)
+                    {
+                        for (int i = 0; i<=2; i++)
+                        {
+                            Comments *comment = [entity.comments objectAtIndex:i];
+                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+30+20*(i+1), 320, 40)];
+                            commentLabel1.numberOfLines = 0;
+                            commentLabel1.font = [UIFont systemFontOfSize:12];
+                            //NSLog(@"comment:%@",comment.commentContent);
+                            commentLabel1.text = [NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent];
+                            [cell addSubview:commentLabel1];
+                        }
+                    }
+                    
                 }
-
+                //no likes
+                else
+                {
+                    
+                }
             }
-            //no likes
             else
             {
-                
+                if(entity.numberOfLikes > 0)
+                {
+                    
+                }
             }
+            
+            cell.messageLabel.text = entity.tweetMessage;
+            cell.likesLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
         }
-        else
-        {
-            if(entity.numberOfLikes > 0)
-            {
-                
-            }
-        }
-        
-        cell.messageLabel.text = entity.tweetMessage;
-        cell.likesLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
+   
     }
     loadMoreFooter.frame = CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height);
     return cell;
