@@ -7,18 +7,19 @@
 //
 
 #import "CellHeightCal.h"
-#define BASIC_HEIGHT 320+30
+#define BASIC_HEIGHT 320.0+30.0//图片高度加上评论按钮
 
 @implementation CellHeightCal
 + (CGFloat)calculateCellHeightWithMessage:(MessageEntity *)message andComments:(NSMutableArray *)comments;
 {
     CGFloat cellHeight = BASIC_HEIGHT;
-    
+    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:13]};
     if([message.tweetMessage length] > 0)
     {
         NSString *tweetMessage = message.tweetMessage;
-        UIFont *textFont = [UIFont systemFontOfSize:13];
-        CGSize textSize = [tweetMessage sizeWithFont:textFont constrainedToSize:CGSizeMake(320, 44) lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGSize textSize = [tweetMessage boundingRectWithSize:CGSizeMake(320, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+        
         CGFloat textHeight = textSize.height;
         cellHeight += textHeight;
     }
@@ -30,33 +31,31 @@
             if([comment.commentContent length] > 0)
             {
                 NSString *commentContent = comment.commentContent;
-                UIFont *textFont = [UIFont systemFontOfSize:13];
-                CGSize textSize = [commentContent sizeWithFont:textFont constrainedToSize:CGSizeMake(320, 44) lineBreakMode:NSLineBreakByWordWrapping];
+                CGSize textSize = [commentContent boundingRectWithSize:CGSizeMake(320, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                 CGFloat textHeight = textSize.height;
                 cellHeight += textHeight;
             }
-
+            
         }
         else if([comments count] == 2)
         {
             Comments *comment = [comments objectAtIndex:0];
             if([comment.commentContent length] > 0)
             {
-                for (int i = 0; i<=2; i++)
+                for (int i = 0; i<=1; i++)
                 {
                     Comments *comment = [comments objectAtIndex:i];
                     if([comment.commentContent length] > 0)
                     {
                         NSString *commentContent = comment.commentContent;
-                        UIFont *textFont = [UIFont systemFontOfSize:13];
-                        CGSize textSize = [commentContent sizeWithFont:textFont constrainedToSize:CGSizeMake(320, 44) lineBreakMode:NSLineBreakByWordWrapping];
+                        CGSize textSize = [commentContent boundingRectWithSize:CGSizeMake(320, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                         CGFloat textHeight = textSize.height;
                         cellHeight += textHeight;
                     }
                     
                 }
             }
-
+            
         }
         else if([comments count] >= 3)
         {
@@ -66,8 +65,7 @@
                 if([comment.commentContent length] > 0)
                 {
                     NSString *commentContent = comment.commentContent;
-                    UIFont *textFont = [UIFont systemFontOfSize:13];
-                    CGSize textSize = [commentContent sizeWithFont:textFont constrainedToSize:CGSizeMake(320, 44) lineBreakMode:NSLineBreakByWordWrapping];
+                    CGSize textSize = [commentContent boundingRectWithSize:CGSizeMake(320, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                     CGFloat textHeight = textSize.height;
                     cellHeight += textHeight;
                 }
@@ -80,6 +78,6 @@
     {
         cellHeight += 20;
     }
-        return cellHeight;
+    return cellHeight;
 }
 @end

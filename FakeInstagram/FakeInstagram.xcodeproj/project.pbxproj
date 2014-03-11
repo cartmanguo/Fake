@@ -7,6 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C13376A18CF4BA0000FE097 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4C13376718CF4BA0000FE097 /* SVProgressHUD.bundle */; };
+		4C13376B18CF4BA0000FE097 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13376918CF4BA0000FE097 /* SVProgressHUD.m */; };
+		4C13377B18CF4C1A000FE097 /* 71.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13376D18CF4C1A000FE097 /* 71.png */; };
+		4C13377C18CF4C1A000FE097 /* anonymous.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13376E18CF4C1A000FE097 /* anonymous.png */; };
+		4C13377D18CF4C1A000FE097 /* check_mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13376F18CF4C1A000FE097 /* check_mark.png */; };
+		4C13377E18CF4C1A000FE097 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377018CF4C1A000FE097 /* delete.png */; };
+		4C13377F18CF4C1A000FE097 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377118CF4C1A000FE097 /* dog.jpg */; };
+		4C13378018CF4C1A000FE097 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377218CF4C1A000FE097 /* home.png */; };
+		4C13378118CF4C1A000FE097 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377318CF4C1A000FE097 /* image.png */; };
+		4C13378218CF4C1A000FE097 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377418CF4C1A000FE097 /* instagram.png */; };
+		4C13378318CF4C1A000FE097 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377518CF4C1A000FE097 /* like.png */; };
+		4C13378418CF4C1A000FE097 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377618CF4C1A000FE097 /* message.png */; };
+		4C13378518CF4C1A000FE097 /* profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377718CF4C1A000FE097 /* profile.png */; };
+		4C13378618CF4C1A000FE097 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377818CF4C1A000FE097 /* refresh.png */; };
+		4C13378718CF4C1A000FE097 /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377918CF4C1A000FE097 /* search.png */; };
+		4C13378818CF4C1A000FE097 /* wheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13377A18CF4C1A000FE097 /* wheel.png */; };
+		4C13378B18CF4C77000FE097 /* TweetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13378A18CF4C77000FE097 /* TweetsViewController.m */; };
+		4C13378E18CF4C96000FE097 /* LikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13378D18CF4C96000FE097 /* LikedViewController.m */; };
+		4C13379518CF4CB2000FE097 /* SelfPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13379018CF4CB2000FE097 /* SelfPageViewController.m */; };
+		4C13379618CF4CB2000FE097 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13379218CF4CB2000FE097 /* UserInfoViewController.m */; };
+		4C13379718CF4CB2000FE097 /* TweetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13379418CF4CB2000FE097 /* TweetDetailViewController.m */; };
+		4C13379A18CF4CC1000FE097 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C13379918CF4CC1000FE097 /* Common.m */; };
+		4C1337A118CF54FC000FE097 /* icon_29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13379B18CF54FC000FE097 /* icon_29x29.png */; };
+		4C1337A218CF54FC000FE097 /* icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13379C18CF54FC000FE097 /* icon_57x57.png */; };
+		4C1337A318CF54FC000FE097 /* icon_58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13379D18CF54FC000FE097 /* icon_58x58.png */; };
+		4C1337A418CF54FC000FE097 /* icon_80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13379E18CF54FC000FE097 /* icon_80x80.png */; };
+		4C1337A518CF54FC000FE097 /* icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C13379F18CF54FC000FE097 /* icon_114x114.png */; };
+		4C1337A618CF54FC000FE097 /* icon_120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C1337A018CF54FC000FE097 /* icon_120x120.png */; };
 		4C67802918C222AE00E8A2B1 /* CellHeightCal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C67802818C222AE00E8A2B1 /* CellHeightCal.m */; };
 		F5A7236B18BC47150075A471 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A7235B18BC47150075A471 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F5A7236C18BC47150075A471 /* LoadMoreTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A7235D18BC47150075A471 /* LoadMoreTableFooterView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -85,6 +113,42 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C13376618CF4BA0000FE097 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		4C13376718CF4BA0000FE097 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		4C13376818CF4BA0000FE097 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		4C13376918CF4BA0000FE097 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		4C13376D18CF4C1A000FE097 /* 71.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 71.png; sourceTree = "<group>"; };
+		4C13376E18CF4C1A000FE097 /* anonymous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anonymous.png; sourceTree = "<group>"; };
+		4C13376F18CF4C1A000FE097 /* check_mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_mark.png; sourceTree = "<group>"; };
+		4C13377018CF4C1A000FE097 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		4C13377118CF4C1A000FE097 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
+		4C13377218CF4C1A000FE097 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		4C13377318CF4C1A000FE097 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		4C13377418CF4C1A000FE097 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram.png; sourceTree = "<group>"; };
+		4C13377518CF4C1A000FE097 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		4C13377618CF4C1A000FE097 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
+		4C13377718CF4C1A000FE097 /* profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile.png; sourceTree = "<group>"; };
+		4C13377818CF4C1A000FE097 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		4C13377918CF4C1A000FE097 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
+		4C13377A18CF4C1A000FE097 /* wheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wheel.png; sourceTree = "<group>"; };
+		4C13378918CF4C77000FE097 /* TweetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetsViewController.h; sourceTree = "<group>"; };
+		4C13378A18CF4C77000FE097 /* TweetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetsViewController.m; sourceTree = "<group>"; };
+		4C13378C18CF4C96000FE097 /* LikedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikedViewController.h; sourceTree = "<group>"; };
+		4C13378D18CF4C96000FE097 /* LikedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikedViewController.m; sourceTree = "<group>"; };
+		4C13378F18CF4CB2000FE097 /* SelfPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfPageViewController.h; sourceTree = "<group>"; };
+		4C13379018CF4CB2000FE097 /* SelfPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfPageViewController.m; sourceTree = "<group>"; };
+		4C13379118CF4CB2000FE097 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
+		4C13379218CF4CB2000FE097 /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
+		4C13379318CF4CB2000FE097 /* TweetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetDetailViewController.h; sourceTree = "<group>"; };
+		4C13379418CF4CB2000FE097 /* TweetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetDetailViewController.m; sourceTree = "<group>"; };
+		4C13379818CF4CC1000FE097 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		4C13379918CF4CC1000FE097 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		4C13379B18CF54FC000FE097 /* icon_29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_29x29.png; sourceTree = SOURCE_ROOT; };
+		4C13379C18CF54FC000FE097 /* icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_57x57.png; sourceTree = SOURCE_ROOT; };
+		4C13379D18CF54FC000FE097 /* icon_58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_58x58.png; sourceTree = SOURCE_ROOT; };
+		4C13379E18CF54FC000FE097 /* icon_80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_80x80.png; sourceTree = SOURCE_ROOT; };
+		4C13379F18CF54FC000FE097 /* icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_114x114.png; sourceTree = SOURCE_ROOT; };
+		4C1337A018CF54FC000FE097 /* icon_120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_120x120.png; sourceTree = SOURCE_ROOT; };
 		4C67802718C222AE00E8A2B1 /* CellHeightCal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellHeightCal.h; sourceTree = "<group>"; };
 		4C67802818C222AE00E8A2B1 /* CellHeightCal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellHeightCal.m; sourceTree = "<group>"; };
 		F5A7235A18BC47150075A471 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -226,6 +290,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C13376518CF4BA0000FE097 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				4C13376618CF4BA0000FE097 /* SVProgressHUD-Prefix.pch */,
+				4C13376718CF4BA0000FE097 /* SVProgressHUD.bundle */,
+				4C13376818CF4BA0000FE097 /* SVProgressHUD.h */,
+				4C13376918CF4BA0000FE097 /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		4C13376C18CF4C1A000FE097 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				4C13376D18CF4C1A000FE097 /* 71.png */,
+				4C13376E18CF4C1A000FE097 /* anonymous.png */,
+				4C13376F18CF4C1A000FE097 /* check_mark.png */,
+				4C13377018CF4C1A000FE097 /* delete.png */,
+				4C13377118CF4C1A000FE097 /* dog.jpg */,
+				4C13377218CF4C1A000FE097 /* home.png */,
+				4C13377318CF4C1A000FE097 /* image.png */,
+				4C13377418CF4C1A000FE097 /* instagram.png */,
+				4C13377518CF4C1A000FE097 /* like.png */,
+				4C13377618CF4C1A000FE097 /* message.png */,
+				4C13377718CF4C1A000FE097 /* profile.png */,
+				4C13377818CF4C1A000FE097 /* refresh.png */,
+				4C13377918CF4C1A000FE097 /* search.png */,
+				4C13377A18CF4C1A000FE097 /* wheel.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		F5A7235818BC47150075A471 /* EGOTableViewPullRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				F5AB9BFD18B5EDA2001B7EA2 /* FakeInstagram */,
+				4C13376C18CF4C1A000FE097 /* images */,
 				F5AB9C1C18B5EDA2001B7EA2 /* FakeInstagramTests */,
 				F5AB9BF618B5EDA2001B7EA2 /* Frameworks */,
 				F5AB9BF518B5EDA2001B7EA2 /* Products */,
@@ -379,6 +476,13 @@
 			children = (
 				F5AB801D18B744780037D83D /* UIKit+AFNetworking */,
 				F5AB7FEA18B6EC880037D83D /* AFNetworking */,
+				4C13376518CF4BA0000FE097 /* SVProgressHUD */,
+				4C13379B18CF54FC000FE097 /* icon_29x29.png */,
+				4C13379C18CF54FC000FE097 /* icon_57x57.png */,
+				4C13379D18CF54FC000FE097 /* icon_58x58.png */,
+				4C13379E18CF54FC000FE097 /* icon_80x80.png */,
+				4C13379F18CF54FC000FE097 /* icon_114x114.png */,
+				4C1337A018CF54FC000FE097 /* icon_120x120.png */,
 				F5AB803718B744CF0037D83D /* photo-placeholder.png */,
 				F5AB800F18B6F1380037D83D /* instagram.png */,
 				F5AB9C0618B5EDA2001B7EA2 /* AppDelegate.h */,
@@ -390,10 +494,22 @@
 				F5AB9C0D18B5EDA2001B7EA2 /* ViewController.m */,
 				F5AB9C2C18B5EE1A001B7EA2 /* LoginViewController.h */,
 				F5AB9C2D18B5EE1A001B7EA2 /* LoginViewController.m */,
+				4C13378918CF4C77000FE097 /* TweetsViewController.h */,
+				4C13378A18CF4C77000FE097 /* TweetsViewController.m */,
 				F5AB801118B6F84C0037D83D /* MainPageViewController.h */,
 				F5AB801218B6F84C0037D83D /* MainPageViewController.m */,
+				4C13378C18CF4C96000FE097 /* LikedViewController.h */,
+				4C13378D18CF4C96000FE097 /* LikedViewController.m */,
 				F5AB801418B701A30037D83D /* ProfileViewController.h */,
 				F5AB801518B701A40037D83D /* ProfileViewController.m */,
+				4C13378F18CF4CB2000FE097 /* SelfPageViewController.h */,
+				4C13379018CF4CB2000FE097 /* SelfPageViewController.m */,
+				4C13379118CF4CB2000FE097 /* UserInfoViewController.h */,
+				4C13379218CF4CB2000FE097 /* UserInfoViewController.m */,
+				4C13379318CF4CB2000FE097 /* TweetDetailViewController.h */,
+				4C13379418CF4CB2000FE097 /* TweetDetailViewController.m */,
+				4C13379818CF4CC1000FE097 /* Common.h */,
+				4C13379918CF4CC1000FE097 /* Common.m */,
 				F5AB9C2F18B5EE3D001B7EA2 /* Constants.h */,
 				F5AB7FE418B6E2420037D83D /* InstagramKey.h */,
 				F5A80E8A18BDBBFE00FAA49F /* DataModel */,
@@ -518,19 +634,40 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C13377D18CF4C1A000FE097 /* check_mark.png in Resources */,
+				4C13378718CF4C1A000FE097 /* search.png in Resources */,
 				F5AB9C1018B5EDA2001B7EA2 /* Images.xcassets in Resources */,
+				4C1337A518CF54FC000FE097 /* icon_114x114.png in Resources */,
 				F5A7237518BC47150075A471 /* whiteArrow.png in Resources */,
 				F5A7237018BC47150075A471 /* blackArrow@2x.png in Resources */,
+				4C13378818CF4C1A000FE097 /* wheel.png in Resources */,
 				F5A7237618BC47150075A471 /* whiteArrow@2x.png in Resources */,
 				F5A7237318BC47150075A471 /* grayArrow.png in Resources */,
 				F5A7236F18BC47150075A471 /* blackArrow.png in Resources */,
+				4C1337A218CF54FC000FE097 /* icon_57x57.png in Resources */,
 				F5A7237418BC47150075A471 /* grayArrow@2x.png in Resources */,
+				4C13376A18CF4BA0000FE097 /* SVProgressHUD.bundle in Resources */,
 				F5A7237118BC47150075A471 /* blueArrow.png in Resources */,
+				4C13377C18CF4C1A000FE097 /* anonymous.png in Resources */,
+				4C13378418CF4C1A000FE097 /* message.png in Resources */,
+				4C13378118CF4C1A000FE097 /* image.png in Resources */,
+				4C13378618CF4C1A000FE097 /* refresh.png in Resources */,
+				4C1337A418CF54FC000FE097 /* icon_80x80.png in Resources */,
+				4C13378218CF4C1A000FE097 /* instagram.png in Resources */,
 				F5AB803818B744CF0037D83D /* photo-placeholder.png in Resources */,
+				4C13377E18CF4C1A000FE097 /* delete.png in Resources */,
+				4C13377B18CF4C1A000FE097 /* 71.png in Resources */,
 				F5AB9C0218B5EDA2001B7EA2 /* InfoPlist.strings in Resources */,
+				4C1337A318CF54FC000FE097 /* icon_58x58.png in Resources */,
+				4C13378518CF4C1A000FE097 /* profile.png in Resources */,
 				F5A7237218BC47150075A471 /* blueArrow@2x.png in Resources */,
+				4C1337A118CF54FC000FE097 /* icon_29x29.png in Resources */,
+				4C13378018CF4C1A000FE097 /* home.png in Resources */,
 				F5AB801018B6F1380037D83D /* instagram.png in Resources */,
 				F5AB9C0B18B5EDA2001B7EA2 /* Main.storyboard in Resources */,
+				4C1337A618CF54FC000FE097 /* icon_120x120.png in Resources */,
+				4C13378318CF4C1A000FE097 /* like.png in Resources */,
+				4C13377F18CF4C1A000FE097 /* dog.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,13 +696,17 @@
 				F5A80E4018BD897A00FAA49F /* Comments.m in Sources */,
 				F5AB803018B744790037D83D /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				F5AB803618B744790037D83D /* UIWebView+AFNetworking.m in Sources */,
+				4C13379A18CF4CC1000FE097 /* Common.m in Sources */,
 				F5AB800618B6EC880037D83D /* AFURLSessionManager.m in Sources */,
 				F5A7236E18BC47150075A471 /* PullTableView.m in Sources */,
 				F5CF338318BC987C00EFB4A4 /* JSONDataParser.m in Sources */,
 				F5CF338918BC98C400EFB4A4 /* TweetItemsParser.m in Sources */,
+				4C13379718CF4CB2000FE097 /* TweetDetailViewController.m in Sources */,
 				F5AB800418B6EC880037D83D /* AFURLRequestSerialization.m in Sources */,
 				F5A7236D18BC47150075A471 /* MessageInterceptor.m in Sources */,
 				F5A9FBF118C06D740034386A /* InstagramMessageCell.m in Sources */,
+				4C13379618CF4CB2000FE097 /* UserInfoViewController.m in Sources */,
+				4C13376B18CF4BA0000FE097 /* SVProgressHUD.m in Sources */,
 				F5AB803B18B74B9B0037D83D /* MessageEntity.m in Sources */,
 				F5AB803118B744790037D83D /* UIAlertView+AFNetworking.m in Sources */,
 				F5A7236C18BC47150075A471 /* LoadMoreTableFooterView.m in Sources */,
@@ -573,6 +714,7 @@
 				F5AB9C2E18B5EE1A001B7EA2 /* LoginViewController.m in Sources */,
 				F5AB800518B6EC880037D83D /* AFURLResponseSerialization.m in Sources */,
 				F5AB9C0E18B5EDA2001B7EA2 /* ViewController.m in Sources */,
+				4C13379518CF4CB2000FE097 /* SelfPageViewController.m in Sources */,
 				F5AB9C0818B5EDA2001B7EA2 /* AppDelegate.m in Sources */,
 				F5AB803418B744790037D83D /* UIProgressView+AFNetworking.m in Sources */,
 				F5AB801918B71DFA0037D83D /* PersonProfileCell.m in Sources */,
@@ -581,8 +723,10 @@
 				F5A7236B18BC47150075A471 /* EGORefreshTableHeaderView.m in Sources */,
 				F5AB800218B6EC880037D83D /* AFSecurityPolicy.m in Sources */,
 				F5AB9C0418B5EDA2001B7EA2 /* main.m in Sources */,
+				4C13378B18CF4C77000FE097 /* TweetsViewController.m in Sources */,
 				F5CF338618BC98A200EFB4A4 /* PersonInfoParser.m in Sources */,
 				F5A9FBEE18C06C690034386A /* TweetContentCell.m in Sources */,
+				4C13378E18CF4C96000FE097 /* LikedViewController.m in Sources */,
 				F5AB803E18B7579D0037D83D /* GallaryCell.m in Sources */,
 				F5AB803518B744790037D83D /* UIRefreshControl+AFNetworking.m in Sources */,
 				F5AB7FE918B6E5290037D83D /* IGManager.m in Sources */,
@@ -712,7 +856,6 @@
 		F5AB9C2718B5EDA2001B7EA2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang Fuke (9UY56CXPNH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -726,7 +869,6 @@
 		F5AB9C2818B5EDA2001B7EA2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang Fuke (9UY56CXPNH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

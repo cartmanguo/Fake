@@ -1,26 +1,20 @@
 //
-//  MainPageViewController.m
+//  LikedViewController.m
 //  FakeInstagram
 //
-//  Created by Line_Hu on 14-2-21.
+//  Created by Line_Hu on 14-3-10.
 //  Copyright (c) 2014年 Alpha. All rights reserved.
 //
 
-#import "MainPageViewController.h"
-#import "PersonProfileCell.h"
-#import "CellHeightCal.h"
+#import "LikedViewController.h"
 #import "SVProgressHUD.h"
-#import "Common.h"
-#import <CoreText/CoreText.h>
 
-@interface MainPageViewController ()
-{
-    SVProgressHUD *svHud;
-}
-@property (strong, nonatomic) NSString *moreFeedUrl;
+@interface LikedViewController ()
+
 @end
 
-@implementation MainPageViewController
+@implementation LikedViewController
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -33,7 +27,7 @@
 - (void)viewDidLoad
 {
 	// Do any additional setup after loading the view.
-    self.title = @"Friends";
+    self.title = @"Liked";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -44,15 +38,21 @@
     [self.tableView registerClass:[TweetContentCell class] forCellReuseIdentifier:@"MessageCell"];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];
     manager = [[IGManager alloc] init];
-    [manager startOperationWithRequesType:GET_FEED];
     manager.delegate = self;
+    [manager startOperationWithRequesType:GET_LIKED];
     loadMoreFooter = [[LoadMoreTableFooterView alloc] initWithFrame:CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
     loadMoreFooter.backgroundColor = [UIColor clearColor];
     loadMoreFooter.delegate = self;
     UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshAction)];
     self.navigationItem.rightBarButtonItem = refresh;
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.2 green:0.3 blue:0.6 alpha:1.0];
     [self.tableView addSubview:loadMoreFooter];
     //[self.tableView addSubview:refreshHeader];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)refreshAction
@@ -60,47 +60,20 @@
     [self.tweets removeAllObjects];
     [self.tableView reloadData];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];
-    [manager startOperationWithRequesType:GET_FEED];
-}
-
-- (void)like
-{
-    
-}
-
-- (void)comment
-{
-    
+    [manager startOperationWithRequesType:GET_LIKED];
 }
 
 - (void)loadMoreTableFooterDidTriggerLoadMore:(LoadMoreTableFooterView *)view
 {
-    manager.delegate = self;
     NSLog(@"LoadMore:%@",manager.nextUrl);
     
     if (manager.nextUrl)
     {
         //loading = YES;
-        [manager startOperationWithRequesType:GET_MORE_FEED];
+        [manager startOperationWithRequesType:GET_MORE_LIKED];
     }
 }
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
-{
-    
-}
-
-- (void)finishedLoading
-{
-    [loadMoreFooter egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    [refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-}
-
-
-- (void)displayWithUserInfo:(Users *)user
-{
-    
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -109,4 +82,3 @@
 }
 
 @end
-

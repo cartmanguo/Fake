@@ -7,9 +7,12 @@
 //
 
 #import "ProfileViewController.h"
+#import "SVProgressHUD.h"
+#import "Common.h"
+#import "TweetDetailViewController.h"
 
 @interface ProfileViewController ()
-
+@property (strong, nonatomic) NSString *moreFeedUrl;
 @end
 
 @implementation ProfileViewController
@@ -26,23 +29,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    loadMoreFooter = [[LoadMoreTableFooterView alloc] initWithFrame:CGRectMake(0, self.collectionView.contentSize.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
-    loadMoreFooter.backgroundColor = [UIColor clearColor];
-    loadMoreFooter.delegate = self;
-    refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0, -44, self.collectionView.frame.size.width, 44)];
-    refreshHeader.backgroundColor = [UIColor clearColor];
-    refreshHeader.delegate = self;
-    [self.collectionView addSubview:refreshHeader];
-    [self.collectionView addSubview:loadMoreFooter];
-    self.title = @"Profile";
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColCell"];
-    IGManager *igManager = [IGManager sharedInstance];
-    igManager.delegate = self;
-    //NSString *token = [igManager token];
-    [igManager startOperationWithRequesType:GET_PERSONAL_INFO];
-    [igManager startOperationWithRequesType:GET_SELF_TWEETS];
+    
     // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -87,17 +80,27 @@
         UILabel *tweetLabel = (UILabel *)[view viewWithTag:93];
         if(_user)
         {
-            NSLog(@"followed:%d",_user.followed);
+            //NSLog(@"followed:%d",_user.followed);
+            NSString *followerLabelNumber = [Common getProperNumberForBigNumber:_user.followers];
+            NSString *followedLabelNumber = [Common getProperNumberForBigNumber:_user.followed];
+            NSString *tweetCountLabelNumber = [Common getProperNumberForBigNumber:_user.tweetCount];
             [avatarView setImageWithURL:[NSURL URLWithString:_user.avatarUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-            followedLabel.text = [NSString stringWithFormat:@"%d",_user.followed];
-            followersLabel.text = [NSString stringWithFormat:@"%d",_user.followers];
-            tweetLabel.text = [NSString stringWithFormat:@"%d",_user.tweetCount];
+            followedLabel.text = followedLabelNumber;
+            followersLabel.text = followerLabelNumber;
+            tweetLabel.text = tweetCountLabelNumber;
         }
         view.layer.borderWidth = 1.0;
         view.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                return view;
+        return view;
     }
     return 0;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    MessageEntity *entity = [_userTweets objectAtIndex:indexPath.row];
+    TweetDetailViewController *tweetDetailVC = [[TweetDetailViewController alloc] initWithTweet:[NSArray arrayWithObject:entity] style:UITableViewStylePlain];
+    [self.navigationController pushViewController:tweetDetailVC animated:YES];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -116,7 +119,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{	
+{
 	[loadMoreFooter egoRefreshScrollViewDidScroll:scrollView];
     [refreshHeader egoRefreshScrollViewDidScroll:scrollView];
 }
@@ -129,13 +132,7 @@
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
 {
-    [_userTweets removeAllObjects];
-    IGManager *igManager = [IGManager sharedInstance];
-    igManager.delegate = self;
-    NSString *token = [igManager token];
-    [igManager startOperationWithRequesType:GET_PERSONAL_INFO];
-    [igManager startOperationWithRequesType:GET_SELF_TWEETS];
-    [self.collectionView reloadData];
+    
 }
 
 - (void)loadMoreTableFooterDidTriggerLoadMore:(LoadMoreTableFooterView *)view
@@ -150,17 +147,8 @@
 
 - (void)loadMoreData
 {
-    IGManager *manager = [IGManager sharedInstance];
-    if (manager.nextUrl) {
-        loading = YES;
-        [manager startOperationWithRequesType:GET_MORE_SELF_TWEETS];
-    }
-    else
-    {
-        NSLog(@"end refreshing");
-        //为啥[self finishedLoading]就不的行？
-        [self performSelector:@selector(finishedLoading) withObject:nil afterDelay:1.0f];
-    }
+    //    IGManager *manager = [IGManager sharedInstance];
+    //    manager.delegate = self;
 }
 
 - (void)finishedLoading
@@ -184,9 +172,12 @@
 
 - (void)displayWithMediaFiles:(NSMutableArray *)media
 {
+    [SVProgressHUD dismiss];
     _userTweets = media;
     [self.collectionView reloadData];
     [self finishedLoading];
+    
+    //self.moreFeedUrl = [IGManager sharedInstance].feed_nextUrl;
 }
 
 @end

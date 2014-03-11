@@ -17,9 +17,11 @@
 {
     
 }
+@property (strong, nonatomic) NSString *nextUrl;
 @property (strong, nonatomic) NSMutableArray *tweets;
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (assign, nonatomic) id<DisplayWithTweetsDelegate>delegate;
 - (void)parseTweetItems:(NSDictionary *)tweetInfo;
 - (void)parseSelfFeeds:(NSDictionary *)selfFeeds;
+- (void)parseTweetItems:(NSDictionary *)tweetInfo type:(RequestTypes)type;
 @end

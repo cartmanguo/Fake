@@ -13,6 +13,7 @@
 {
     
 }
+@property (assign, nonatomic) NSUInteger createdTime;
 @property (strong, nonatomic) NSString *tweetMessage;
 @property (strong, nonatomic) NSString *imageUrl;
 @property (strong, nonatomic) NSString *userName;

@@ -29,6 +29,7 @@ static IGManager *sharedInstance = nil;
     {
         self.tweetsArray = [NSMutableArray array];
         self.followedTweetsArray = [NSMutableArray array];
+        self.likedTweetsArray = [NSMutableArray array];
     }
     return self;
 }
@@ -50,11 +51,17 @@ static IGManager *sharedInstance = nil;
             requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=20",BASE_URL,INSTAGRAM_GET_MYUSER_FEED,token]];
             break;
         case 4:
-            requestUrl = [NSURL URLWithString:self.feed_nextUrl];
+            requestUrl = [NSURL URLWithString:self.nextUrl];
             break;
         case 5:
             break;
         case 6:
+            break;
+        case 7:
+            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=20",BASE_URL,INSTAGRAM_GET_LIKED,token]];
+            break;
+        case 8:
+            requestUrl = [NSURL URLWithString:self.nextUrl];
             break;
         default:
             break;
@@ -73,50 +80,24 @@ static IGManager *sharedInstance = nil;
          [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
          self.receivedInfo = (NSDictionary *)object;
          NSLog(@"%@",object);
-         if(type == GET_PERSONAL_INFO)
+         if(type == GET_SELF_INFO)
          {
              PersonInfoParser *parser = [[PersonInfoParser alloc] init];
              [parser parsePersonInfoDictionary:(NSDictionary *)object];
              [self.delegate displayWithUserInfo:parser.user];
          }
-         else if(type == GET_SELF_TWEETS)
+         else if(type == GET_FEED || type == GET_SELF_FEED || type == GET_MORE_FEED || type == GET_MORE_SELF_FEED || type == GET_LIKED || type == GET_MORE_LIKED)
          {
              TweetItemsParser *parser = [[TweetItemsParser alloc] init];
-             [parser parseSelfFeeds:(NSDictionary *)object];
-             _tweetsArray = parser.tweets;
-             [self.delegate displayWithMediaFiles:parser.tweets];
-         }
-         else if(type == GET_MORE_SELF_TWEETS)
-         {
-             TweetItemsParser *parser = [[TweetItemsParser alloc] init];
-             [parser parseSelfFeeds:(NSDictionary *)object];
+             [parser parseTweetItems:(NSDictionary *)object type:type];
              for (MessageEntity *entity in parser.tweets)
              {
                  [_tweetsArray addObject:entity];
              }
+             self.nextUrl = parser.nextUrl;
+             
+             //NSLog(@"cnt:%d",[_followedTweetsArray count]);
              [self.delegate displayWithMediaFiles:_tweetsArray];
-         }
-         else if(type == GET_FEED)
-         {
-             TweetItemsParser *parser = [[TweetItemsParser alloc] init];
-             [parser parseTweetItems:(NSDictionary *)object];
-             for (MessageEntity *entity in parser.tweets)
-             {
-                 [_followedTweetsArray addObject:entity];
-             }
-             //NSLog(@"cnt:%d",[_followedTweetsArray count]);
-             [self.delegate displayWithMediaFiles:_followedTweetsArray];
-         }
-         else if(type == GET_MORE_FEED)
-         {
-             TweetItemsParser *parser = [[TweetItemsParser alloc] init];
-             [parser parseTweetItems:(NSDictionary *)object];
-             for (MessageEntity *entity in parser.tweets)
-             {
-                 [_followedTweetsArray addObject:entity];
-             }
-             //NSLog(@"cnt:%d",[_followedTweetsArray count]);
-             [self.delegate displayWithMediaFiles:_followedTweetsArray];
          }
      }failure:^(AFHTTPRequestOperation *op,NSError *error)
      {
@@ -125,7 +106,51 @@ static IGManager *sharedInstance = nil;
          NSLog(@"%@",[error localizedDescription]);
      }];
     [infoRequestOp start];
+    
+}
 
+- (void)getPersonInfoWithUserID:(NSInteger)userID
+{
+    NSURL *requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%d/?access_token=%@",BASE_URL,INSTAGRAM_GET_OTHERUSER_INFO,userID,self.token]];
+    NSLog(@"%@",requestUrl);
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    AFHTTPRequestOperation *getUserInfoOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    getUserInfoOp.responseSerializer = [AFJSONResponseSerializer serializer];
+    [getUserInfoOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op, id object)
+     {
+         NSLog(@"%@",object);
+         PersonInfoParser *parser = [[PersonInfoParser alloc] init];
+         [parser parsePersonInfoDictionary:(NSDictionary *)object];
+         [self.delegate displayWithUserInfo:parser.user];
+     }failure:^(AFHTTPRequestOperation *op, NSError *error)
+     {
+         NSLog(@"failed:%@",[error localizedDescription]);
+     }];
+    [getUserInfoOp start];
+}
+
+- (void)getPersonFeedWithUserID:(NSInteger)userID
+{
+    NSURL *requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%d/media/recent?access_token=%@&count=15",BASE_URL,INSTAGRAM_GET_OTHERUSER_INFO,userID,self.token]];
+    NSLog(@"%@",requestUrl);
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    AFHTTPRequestOperation *getUserFeedOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    getUserFeedOp.responseSerializer = [AFJSONResponseSerializer serializer];
+    [getUserFeedOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op, id object)
+     {
+         TweetItemsParser *parser = [[TweetItemsParser alloc] init];
+         [parser parseTweetItems:(NSDictionary *)object type:0];
+         for (MessageEntity *entity in parser.tweets)
+         {
+             [_tweetsArray addObject:entity];
+         }
+         self.nextUrl = parser.nextUrl;
+         [self.delegate displayWithMediaFiles:_tweetsArray];
+     }failure:^(AFHTTPRequestOperation *op, NSError *error)
+     {
+         NSLog(@"failed:%@",[error localizedDescription]);
+     }];
+    [getUserFeedOp start];
 }
 
 - (NSString *)token
@@ -142,19 +167,19 @@ static IGManager *sharedInstance = nil;
     AFHTTPRequestOperation *infoRequestOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     infoRequestOp.responseSerializer = [AFJSONResponseSerializer serializer];
     [infoRequestOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op,id object)
-    {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        self.receivedInfo = (NSDictionary *)object;
-        //NSDictionary *dic = [self.receivedInfo objectForKey:@"data"];
-        //NSLog(@"%@",[self.receivedInfo objectForKey:@"data"]);
-        //NSLog(@"counts:%@",[dic objectForKey:@"counts"]);
-        [self parseReceivedData:_receivedInfo];
-    }failure:^(AFHTTPRequestOperation *op,NSError *error)
-    {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
-        NSLog(@"%@",[error localizedDescription]);
-    }];
+     {
+         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         self.receivedInfo = (NSDictionary *)object;
+         //NSDictionary *dic = [self.receivedInfo objectForKey:@"data"];
+         //NSLog(@"%@",[self.receivedInfo objectForKey:@"data"]);
+         //NSLog(@"counts:%@",[dic objectForKey:@"counts"]);
+         [self parseReceivedData:_receivedInfo];
+     }failure:^(AFHTTPRequestOperation *op,NSError *error)
+     {
+         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         
+         NSLog(@"%@",[error localizedDescription]);
+     }];
     [infoRequestOp start];
 }
 
@@ -288,7 +313,7 @@ static IGManager *sharedInstance = nil;
          NSLog(@"%@",[error localizedDescription]);
      }];
     [infoRequestOp start];
-
+    
 }
 
 @end

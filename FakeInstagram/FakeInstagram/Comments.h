@@ -14,6 +14,6 @@
 }
 @property (strong, nonatomic) NSString *commentContent;
 @property (strong, nonatomic) NSString *userName;
-@property (strong, nonatomic) NSString *userID;
+@property (assign, nonatomic) NSInteger userID;
 @property (strong, nonatomic) NSString *user_picUrl;
 @end

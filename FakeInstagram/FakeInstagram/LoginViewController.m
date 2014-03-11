@@ -67,6 +67,8 @@
             NSLog(@"AccessToken = %@ ",strAccessToken);
             self.token = strAccessToken;
             [[NSUserDefaults standardUserDefaults] setObject:_token forKey:kToken];
+            UITabBarController *mainVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RootTab"];
+            [self presentViewController:mainVC animated:YES completion:nil];
             //[self loadRequestForMediaData];
             //[self presentViewController:[[MainPageViewController alloc] init] animated:YES completion:nil];
         }

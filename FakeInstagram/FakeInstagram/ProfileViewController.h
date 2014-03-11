@@ -12,7 +12,6 @@
 #import "UIImageView+AFNetworking.h"
 #import "LoadMoreTableFooterView.h"
 #import "EGORefreshTableHeaderView.h"
-
 @interface ProfileViewController : UICollectionViewController<ParsePersonInfoDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,LoadMoreTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
     LoadMoreTableFooterView *loadMoreFooter;
