@@ -53,7 +53,7 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     NSString* urlString = [[request URL] absoluteString];
-    //NSLog(@"URL STRING : %@ ",urlString);
+    NSLog(@"URL STRING : %@ ",urlString);
     NSArray *UrlParts = [urlString componentsSeparatedByString:[NSString stringWithFormat:@"%@/",kREDIRECTURI]];
     if ([UrlParts count] > 1)
     {

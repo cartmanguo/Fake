@@ -39,6 +39,8 @@
 		<string>icon_114x114.png</string>
 		<string>icon_120x120.png</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
