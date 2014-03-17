@@ -14,7 +14,8 @@
 #define SMALL_ICON_SIZE 12
 @interface TweetsViewController ()
 {
-    
+    NSRegularExpression *topicRegex;
+    NSRegularExpression *atSignRegex;
 }
 @end
 
@@ -32,12 +33,25 @@
 
 - (void)viewDidLoad
 {
-	// Do any additional setup after loading the view.
+    	// Do any additional setup after loading the view.
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+}
+
+- (void)updateCommentString:(NSString *)text withRegexExp:(NSRegularExpression *)regex resultString:(NSMutableAttributedString *)attString
+{
+    NSArray *matchs = [regex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
+    if([matchs count] > 0)
+    {
+        for (NSTextCheckingResult *result in matchs)
+        {
+            NSRange matchRange = result.range;
+            [attString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:matchRange];
+        }
+    }
 }
 
 - (void)refreshAction
@@ -84,6 +98,9 @@
         cell = [[TweetContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idf];
         if(_tweets)
         {
+            topicRegex = [[NSRegularExpression alloc] initWithPattern:@"#([^#|\\W]+)" options:NSRegularExpressionCaseInsensitive error:nil];
+            atSignRegex = [[NSRegularExpression alloc] initWithPattern:@"@\\w+" options:NSRegularExpressionCaseInsensitive error:nil];
+
             MessageEntity *entity = [_tweets objectAtIndex:indexPath.section];
             //NSLog(@"tweet:%@",entity.tweetMessage);
             UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
@@ -105,8 +122,12 @@
                 [cell addSubview:messageLabel];
                 messageLabel.numberOfLines = 0;
                 messageLabel.font = [UIFont systemFontOfSize:FONTSIZE];
-                messageLabel.text = entity.tweetMessage;
+                NSMutableAttributedString *attMessage = [[NSMutableAttributedString alloc] initWithString:entity.tweetMessage];
+                //messageLabel.text = entity.tweetMessage;
                 buttonPostion += size.height;
+                [self updateCommentString:entity.tweetMessage withRegexExp:topicRegex resultString:attMessage];
+                [self updateCommentString:entity.tweetMessage withRegexExp:atSignRegex resultString:attMessage];
+                messageLabel.attributedText = attMessage;
                 //有点赞
                 if(entity.numberOfLikes > 0)
                 {
@@ -129,6 +150,8 @@
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                         [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
                         buttonPostion += commentSize.height;
                         [cell addSubview:commentLabel1];
@@ -150,6 +173,8 @@
                             commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             [cell addSubview:commentLabel1];
                             buttonPostion += commentSize.height;
@@ -180,6 +205,8 @@
                             //NSLog(@"comment:%@",comment.commentContent);
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             [cell addSubview:commentLabel1];
                             buttonPostion += commentSize.height;
@@ -200,6 +227,8 @@
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                         [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
                         buttonPostion += commentSize.height;
                         [cell addSubview:commentLabel1];
@@ -221,6 +250,8 @@
                             commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             buttonPostion += commentSize.height;
                             [cell addSubview:commentLabel1];
@@ -251,6 +282,8 @@
                             //NSLog(@"comment:%@",comment.commentContent);
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             [cell addSubview:commentLabel1];
                             buttonPostion += commentSize.height;
@@ -287,6 +320,8 @@
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                         [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
                         buttonPostion += commentSize.height;
                         [cell addSubview:commentLabel1];
@@ -308,6 +343,8 @@
                             commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             buttonPostion += commentSize.height;
                             [cell addSubview:commentLabel1];
@@ -338,6 +375,8 @@
                             //NSLog(@"comment:%@",comment.commentContent);
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             [cell addSubview:commentLabel1];
                             buttonPostion += commentSize.height;
@@ -358,6 +397,8 @@
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                         [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
                         buttonPostion += commentSize.height;
                         [cell addSubview:commentLabel1];
@@ -379,6 +420,8 @@
                             commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             buttonPostion += commentSize.height;
                             [cell addSubview:commentLabel1];
@@ -410,6 +453,8 @@
                             //NSLog(@"comment:%@",comment.commentContent);
                             NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
                             [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                             commentLabel1.attributedText = commentText;
                             buttonPostion += commentSize.height;
                             [cell addSubview:commentLabel1];
