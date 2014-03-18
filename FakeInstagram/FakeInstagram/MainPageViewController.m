@@ -33,6 +33,7 @@
 - (void)viewDidLoad
 {
 	// Do any additional setup after loading the view.
+    [super viewDidLoad];
     self.title = @"Friends";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -57,10 +58,19 @@
 
 - (void)refreshAction
 {
-    [self.tweets removeAllObjects];
-    [self.tableView reloadData];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height) animated:YES];
+    //防止多次获取数据，可能网络差获取比较慢，如果再点次刷新，可能就会得到两次返回的数据，so刷新时取消当前的请求
+    for (AFHTTPRequestOperation *op in manager.operations)
+    {
+        [op cancel];
+    }
+    [manager.operations removeAllObjects];
+    //[self.tweets removeAllObjects];
+    //[self.tableView reloadData];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];
+    [manager.tweetsArray removeAllObjects];
     [manager startOperationWithRequesType:GET_FEED];
+    
 }
 
 - (void)like
@@ -95,7 +105,6 @@
     [loadMoreFooter egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
-
 
 - (void)displayWithUserInfo:(Users *)user
 {

@@ -30,6 +30,7 @@ static IGManager *sharedInstance = nil;
         self.tweetsArray = [NSMutableArray array];
         self.followedTweetsArray = [NSMutableArray array];
         self.likedTweetsArray = [NSMutableArray array];
+        self.operations = [NSMutableArray array];
     }
     return self;
 }
@@ -72,7 +73,7 @@ static IGManager *sharedInstance = nil;
 - (void)startOperationWithRequesType:(RequestTypes)type;
 {
     NSURL *url = [self getURLWithType:type token:self.token];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0f];
     AFHTTPRequestOperation *infoRequestOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     infoRequestOp.responseSerializer = [AFJSONResponseSerializer serializer];
     [infoRequestOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op,id object)
@@ -92,19 +93,21 @@ static IGManager *sharedInstance = nil;
              [parser parseTweetItems:(NSDictionary *)object type:type];
              for (MessageEntity *entity in parser.tweets)
              {
-                 [_tweetsArray addObject:entity];
+                 [self.tweetsArray addObject:entity];
+                 //NSLog(@"count:%d",[_tweetsArray count]);
              }
              self.nextUrl = parser.nextUrl;
              
              //NSLog(@"cnt:%d",[_followedTweetsArray count]);
-             [self.delegate displayWithMediaFiles:_tweetsArray];
+             [self.delegate displayWithMediaFiles:self.tweetsArray];
          }
      }failure:^(AFHTTPRequestOperation *op,NSError *error)
      {
          [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-         
-         NSLog(@"%@",[error localizedDescription]);
+         [self.delegate handleErrorSituation:[error code]];
+         NSLog(@"%@,%d",[error localizedDescription],[error code]);
      }];
+    [_operations addObject:infoRequestOp];
     [infoRequestOp start];
     
 }
@@ -113,7 +116,7 @@ static IGManager *sharedInstance = nil;
 {
     NSURL *requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%d/?access_token=%@",BASE_URL,INSTAGRAM_GET_OTHERUSER_INFO,userID,self.token]];
     NSLog(@"%@",requestUrl);
-    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0f];
     AFHTTPRequestOperation *getUserInfoOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     getUserInfoOp.responseSerializer = [AFJSONResponseSerializer serializer];
     [getUserInfoOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op, id object)
@@ -125,7 +128,9 @@ static IGManager *sharedInstance = nil;
      }failure:^(AFHTTPRequestOperation *op, NSError *error)
      {
          NSLog(@"failed:%@",[error localizedDescription]);
+         //[self.delegate handleErrorSituation:[error code]];
      }];
+    [_operations addObject:getUserInfoOp];
     [getUserInfoOp start];
 }
 
@@ -133,7 +138,7 @@ static IGManager *sharedInstance = nil;
 {
     NSURL *requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%d/media/recent?access_token=%@&count=15",BASE_URL,INSTAGRAM_GET_OTHERUSER_INFO,userID,self.token]];
     NSLog(@"%@",requestUrl);
-    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0f];
     AFHTTPRequestOperation *getUserFeedOp = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     getUserFeedOp.responseSerializer = [AFJSONResponseSerializer serializer];
     [getUserFeedOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op, id object)
@@ -148,8 +153,10 @@ static IGManager *sharedInstance = nil;
          [self.delegate displayWithMediaFiles:_tweetsArray];
      }failure:^(AFHTTPRequestOperation *op, NSError *error)
      {
-         NSLog(@"failed:%@",[error localizedDescription]);
+         NSLog(@"failed:%d,%@",[error code],[error localizedFailureReason]);
+         [self.delegate handleErrorSituation:[error code]];
      }];
+    [_operations addObject:getUserFeedOp];
     [getUserFeedOp start];
 }
 

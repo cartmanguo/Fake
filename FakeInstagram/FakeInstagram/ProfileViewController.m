@@ -38,6 +38,7 @@
     [super viewWillAppear:animated];
 }
 
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
@@ -168,6 +169,21 @@
 {
     _user = user;
     [self.collectionView reloadData];
+}
+
+- (void)handleErrorSituation:(ErrorType)errorType
+{
+    if(errorType == ERROR_TYPE_NOT_AUTHORIZED)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"未授权" message:@"该用户设置为隐私账户" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if(errorType == ERROR_TYPE_TIME_OUT)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"超时" message:@"获取信息超时，请检查网络后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    [SVProgressHUD dismiss];
 }
 
 - (void)displayWithMediaFiles:(NSMutableArray *)media

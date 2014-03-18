@@ -45,18 +45,29 @@
     loadMoreFooter.delegate = self;
     UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshAction)];
     self.navigationItem.rightBarButtonItem = refresh;
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.2 green:0.3 blue:0.6 alpha:1.0];
+    //self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.2 green:0.3 blue:0.6 alpha:1.0];
     [self.tableView addSubview:loadMoreFooter];
     //[self.tableView addSubview:refreshHeader];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
+//    for (AFHTTPRequestOperation *op in manager.operations)
+//    {
+//        [op cancel];
+//    }
 }
 
 - (void)refreshAction
 {
+    for (AFHTTPRequestOperation *op in manager.operations)
+    {
+        [op cancel];
+    }
+    
+    [manager.operations removeAllObjects];
     [self.tweets removeAllObjects];
     [self.tableView reloadData];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];

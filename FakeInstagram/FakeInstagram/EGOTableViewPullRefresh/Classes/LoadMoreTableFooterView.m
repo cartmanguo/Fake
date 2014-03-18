@@ -120,7 +120,7 @@
 			
 			break;
 		case EGOOPullNormal:
-            NSLog(@"stopped");
+            //NSLog(@"stopped");
 			if (_state == EGOOPullPulling) {
 				[CATransaction begin];
 				[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];

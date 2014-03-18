@@ -58,12 +58,29 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
+    for (AFHTTPRequestOperation *op in manager.operations)
+    {
+        [op cancel];
+    }
+    manager.delegate = nil;
+}
+
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
 {
+    for (AFHTTPRequestOperation *op in manager.operations)
+    {
+        [op cancel];
+    }
+    [manager.operations removeAllObjects];
     [self.userTweets removeAllObjects];
     //    IGManager *igManager = [IGManager sharedInstance];
     //    igManager.delegate = self;
     //NSString *token = [manager token];
+    manager.delegate = self;
     [manager getPersonFeedWithUserID:_userID];
     [manager getPersonInfoWithUserID:_userID];
     [self.collectionView reloadData];

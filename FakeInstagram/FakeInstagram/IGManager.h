@@ -20,12 +20,19 @@ typedef enum RequestType
     GET_USER_INFO,
 }RequestTypes;
 
+typedef enum ErrorTypes
+{
+    ERROR_TYPE_TIME_OUT=-1001,
+    ERROR_TYPE_NOT_AUTHORIZED=-1011,
+}ErrorType;
+
 @class Users;
 @class MessageEntity;
 @protocol ParsePersonInfoDelegate <NSObject>
 @optional
 - (void)displayWithUserInfo:(Users *)user;
 - (void)displayWithMediaFiles:(NSMutableArray *)media;
+- (void)handleErrorSituation:(ErrorType)errorType;
 @end
 #import <Foundation/Foundation.h>
 #import "InstagramKey.h"
@@ -40,6 +47,7 @@ typedef enum RequestType
 {
     
 }
+@property (strong, nonatomic) NSMutableArray *operations;
 @property (strong, nonatomic) NSDictionary *receivedInfo;
 @property (assign, nonatomic) id<ParsePersonInfoDelegate>delegate;
 @property (strong, nonatomic) NSMutableArray *tweetsArray;

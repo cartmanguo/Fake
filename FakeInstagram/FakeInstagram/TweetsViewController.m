@@ -12,11 +12,17 @@
 #import "UserInfoViewController.h"
 #define FONTSIZE 13
 #define SMALL_ICON_SIZE 12
+#define COLOR(R, G, B, A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
+#define R 51
+#define G 116
+#define B 219
+
 @interface TweetsViewController ()
 {
     NSRegularExpression *topicRegex;
     NSRegularExpression *atSignRegex;
 }
+
 @end
 
 @implementation TweetsViewController
@@ -33,12 +39,17 @@
 
 - (void)viewDidLoad
 {
-    	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    if(topicRegex == nil || atSignRegex  == nil)
+    {
+        topicRegex = [[NSRegularExpression alloc] initWithPattern:@"#([^#|\\W]+)" options:NSRegularExpressionCaseInsensitive error:nil];
+        atSignRegex = [[NSRegularExpression alloc] initWithPattern:@"@\\w+" options:NSRegularExpressionCaseInsensitive error:nil];
+    }
 }
 
 - (void)updateCommentString:(NSString *)text withRegexExp:(NSRegularExpression *)regex resultString:(NSMutableAttributedString *)attString
@@ -49,7 +60,7 @@
         for (NSTextCheckingResult *result in matchs)
         {
             NSRange matchRange = result.range;
-            [attString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:matchRange];
+            [attString addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:matchRange];
         }
     }
 }
@@ -67,6 +78,17 @@
 - (void)comment
 {
     
+}
+
+- (void)userButtonPressed:(id)sender
+{
+    //NSLog(@"name pressed");
+    UIButton *button = (UIButton *)sender;
+    NSInteger userID = button.tag;
+    NSLog(@"user:%d",userID);
+    UserInfoViewController *userInfoVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"UserInfo"];
+    userInfoVC.userID = userID;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 #pragma mark - TableView Datasource
@@ -96,385 +118,480 @@
     if(cell == nil)
     {
         cell = [[TweetContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idf];
-        if(_tweets)
+    }
+    for (UIView *view in [cell.contentView subviews])
+    {
+        [view removeFromSuperview];
+    }
+    if(_tweets)
+    {
+        //#符号，后面可匹配一个#符号和一个
+        MessageEntity *entity = [self.tweets objectAtIndex:indexPath.section];
+        UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
+        tweetImageView.contentMode = UIViewContentModeScaleToFill;
+        [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+        [cell.contentView addSubview:tweetImageView];
+        //[cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
+        //Comments *comment = [entity.comments objectAtIndex:indexPath.row];
+        
+        //有帖子内容
+        if ([entity.tweetMessage length] > 0)
         {
-            topicRegex = [[NSRegularExpression alloc] initWithPattern:@"#([^#|\\W]+)" options:NSRegularExpressionCaseInsensitive error:nil];
-            atSignRegex = [[NSRegularExpression alloc] initWithPattern:@"@\\w+" options:NSRegularExpressionCaseInsensitive error:nil];
-
-            MessageEntity *entity = [_tweets objectAtIndex:indexPath.section];
-            //NSLog(@"tweet:%@",entity.tweetMessage);
-            UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
-            tweetImageView.contentMode = UIViewContentModeScaleToFill;
-            [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-            [cell addSubview:tweetImageView];
-            //[cell.tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-            //Comments *comment = [entity.comments objectAtIndex:indexPath.row];
-            
-            //有帖子内容
-            if ([entity.tweetMessage length] > 0)
+            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:FONTSIZE]};
+            CGSize size = [entity.tweetMessage boundingRectWithSize:CGSizeMake(300, 0) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+            UIImageView *messageIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message.png"]];
+            messageIcon.frame = CGRectMake(2, 0+300+2, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+            UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, size.height)];
+            [cell.contentView addSubview:messageIcon];
+            [cell.contentView addSubview:messageLabel];
+            messageLabel.numberOfLines = 0;
+            messageLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+            NSMutableAttributedString *attMessage = [[NSMutableAttributedString alloc] initWithString:entity.tweetMessage];
+            //messageLabel.text = entity.tweetMessage;
+            buttonPostion += size.height;
+            [self updateCommentString:entity.tweetMessage withRegexExp:topicRegex resultString:attMessage];
+            [self updateCommentString:entity.tweetMessage withRegexExp:atSignRegex resultString:attMessage];
+            messageLabel.attributedText = attMessage;
+            //有点赞
+            if(entity.numberOfLikes > 0)
             {
-                NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:FONTSIZE]};
-                CGSize size = [entity.tweetMessage boundingRectWithSize:CGSizeMake(300, 0) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                UIImageView *messageIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message.png"]];
-                messageIcon.frame = CGRectMake(2, 0+300+2, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
-                UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, size.height)];
-                [cell addSubview:messageIcon];
-                [cell addSubview:messageLabel];
-                messageLabel.numberOfLines = 0;
-                messageLabel.font = [UIFont systemFontOfSize:FONTSIZE];
-                NSMutableAttributedString *attMessage = [[NSMutableAttributedString alloc] initWithString:entity.tweetMessage];
-                //messageLabel.text = entity.tweetMessage;
-                buttonPostion += size.height;
-                [self updateCommentString:entity.tweetMessage withRegexExp:topicRegex resultString:attMessage];
-                [self updateCommentString:entity.tweetMessage withRegexExp:atSignRegex resultString:attMessage];
-                messageLabel.attributedText = attMessage;
-                //有点赞
-                if(entity.numberOfLikes > 0)
+                UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height, 300, 20)];
+                likeLabel.numberOfLines = 0;
+                likeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+                likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
+                UIImageView *likesIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"like.png"]];
+                likesIcon.frame = CGRectMake(2, 0+300+size.height+4, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+                [cell.contentView addSubview:likesIcon];
+                buttonPostion += 20;
+                [cell.contentView addSubview:likeLabel];
+                //有评论
+                if([entity.comments count] == 1)
                 {
-                    UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height, 300, 20)];
-                    likeLabel.numberOfLines = 0;
-                    likeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
-                    likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
-                    UIImageView *likesIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"like.png"]];
-                    likesIcon.frame = CGRectMake(2, 0+300+size.height+4, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
-                    [cell addSubview:likesIcon];
-                    buttonPostion += 20;
-                    [cell addSubview:likeLabel];
-                    //有评论
-                    if([entity.comments count] == 1)
+                    Comments *comment = [entity.comments objectAtIndex:0];
+                    CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                    UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                    userNameBtn.frame = CGRectMake(20, 0+300+size.height+20, nameStringSize.width, 20);
+                    [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20, 300, commentSize.height)];
+                    commentLabel1.numberOfLines = 0;
+                    commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                    [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                    [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                    [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                    userNameBtn.tag = comment.userID;
+                    commentLabel1.attributedText = commentText;
+                    buttonPostion += commentSize.height;
+                    [cell.contentView addSubview:userNameBtn];
+                    [cell.contentView addSubview:commentLabel1];
+                }
+                else if ([entity.comments count] == 2)
+                {
+                    for (int i = 0; i<=1; i++)
                     {
-                        Comments *comment = [entity.comments objectAtIndex:0];
+                        Comments *previousComment = nil;
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        if(i == 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20, 300, commentSize.height)];
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20+preCommentSize.height, 300, commentSize.height)];
                         commentLabel1.numberOfLines = 0;
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                        [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
                         [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
                         [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
                         buttonPostion += commentSize.height;
-                        [cell addSubview:commentLabel1];
                     }
-                    else if ([entity.comments count] == 2)
-                    {
-                        for (int i = 0; i<=1; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            if(i == 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20+preCommentSize.height, 300, commentSize.height)];
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            [cell addSubview:commentLabel1];
-                            buttonPostion += commentSize.height;
-                        }
-                    }
-                    else if ([entity.comments count] >= 3)
-                    {
-                        for (int i = 0; i<=2; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *firstComment = [entity.comments firstObject];
-                            CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            if(i >= 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20+preCommentSize.height, 300, commentSize.height)];
-                            if(i ==2)
-                            {
-                                commentLabel1.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
-                            }
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            //NSLog(@"comment:%@",comment.commentContent);
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            [cell addSubview:commentLabel1];
-                            buttonPostion += commentSize.height;
-                        }
-                    }
-                    
                 }
-                //有内容但没点赞
-                else
+                else if ([entity.comments count] >= 3)
                 {
-                    //有评论
-                    if([entity.comments count] == 1)
+                    for (int i = 0; i<=2; i++)
                     {
-                        Comments *comment = [entity.comments objectAtIndex:0];
+                        Comments *previousComment = nil;
+                        Comments *firstComment = [entity.comments firstObject];
+                        CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        if(i >= 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
+                        
+                        Comments *comment = [entity.comments objectAtIndex:i];
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height, 300, commentSize.height)];
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        //userNameBtn.backgroundColor = [UIColor redColor];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+20+preCommentSize.height, 300, commentSize.height)];
+                        if(i ==2)
+                        {
+                            commentLabel1.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
+                            userNameBtn.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height+firstCommentSize.height, nameStringSize.width, 20);
+                        }
                         commentLabel1.numberOfLines = 0;
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        //NSLog(@"comment:%@",comment.commentContent);
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                        [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
                         [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
                         [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
+                        
+                        [cell.contentView addSubview:userNameBtn];
+                        
+                        [cell.contentView addSubview:commentLabel1];
                         buttonPostion += commentSize.height;
-                        [cell addSubview:commentLabel1];
                     }
-                    else if ([entity.comments count] == 2)
-                    {
-                        for (int i = 0; i<=1; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            if(i == 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+preCommentSize.height, 300, commentSize.height)];
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            buttonPostion += commentSize.height;
-                            [cell addSubview:commentLabel1];
-                        }
-                    }
-                    else if ([entity.comments count] >= 3)
-                    {
-                        for (int i = 0; i<=2; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *firstComment = [entity.comments firstObject];
-                            CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            if(i >= 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+preCommentSize.height, 300, commentSize.height)];
-                            if(i ==2)
-                            {
-                                commentLabel1.frame = CGRectMake(20, 0+300+size.height+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
-                            }
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            //NSLog(@"comment:%@",comment.commentContent);
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            [cell addSubview:commentLabel1];
-                            buttonPostion += commentSize.height;
-                            
-                        }
-                    }
-                    
                 }
+                
             }
-            //没帖子内容
+            //有内容但没点赞
             else
             {
-                NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:FONTSIZE]};
-                //有点赞
-                if(entity.numberOfLikes > 0)
+                //有评论
+                if([entity.comments count] == 1)
                 {
-                    UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, 20)];
-                    likeLabel.numberOfLines = 0;
-                    likeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
-                    likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
-                    UIImageView *likesIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"like.png"]];
-                    likesIcon.frame = CGRectMake(2, 0+300+4, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
-                    [cell addSubview:likesIcon];
-                    [cell addSubview:likeLabel];
-                    buttonPostion += 20;
+                    Comments *comment = [entity.comments objectAtIndex:0];
+                    CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                    UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                    userNameBtn.frame = CGRectMake(20, 0+300+size.height+20, nameStringSize.width, 20);
+                    [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    userNameBtn.tag = comment.userID;
                     
-                    //有评论
-                    if([entity.comments count] == 1)
-                    {
-                        Comments *comment = [entity.comments objectAtIndex:0];
-                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20, 300, commentSize.height)];
-                        commentLabel1.numberOfLines = 0;
-                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                        [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                        commentLabel1.attributedText = commentText;
-                        buttonPostion += commentSize.height;
-                        [cell addSubview:commentLabel1];
-                    }
-                    else if ([entity.comments count] == 2)
-                    {
-                        for (int i = 0; i<=1; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            if(i == 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20+preCommentSize.height, 300, commentSize.height)];
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            buttonPostion += commentSize.height;
-                            [cell addSubview:commentLabel1];
-                        }
-                    }
-                    else if ([entity.comments count] >= 3)
-                    {
-                        for (int i = 0; i<=2; i++)
-                        {
-                            Comments *previousComment = nil;
-                            Comments *firstComment = [entity.comments firstObject];
-                            CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            if(i >= 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20+preCommentSize.height, 300, commentSize.height)];
-                            if(i == 2)
-                            {
-                                commentLabel1.frame = CGRectMake(20, 0+300+20+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
-                            }
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            //NSLog(@"comment:%@",comment.commentContent);
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            [cell addSubview:commentLabel1];
-                            buttonPostion += commentSize.height;
-                        }
-                    }
-                    
+                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height, 300, commentSize.height)];
+                    commentLabel1.numberOfLines = 0;
+                    commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                    [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                    [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                    [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                    commentLabel1.attributedText = commentText;
+                    buttonPostion += commentSize.height;
+                    [cell.contentView addSubview:userNameBtn];
+                    [cell.contentView addSubview:commentLabel1];
                 }
-                //没点赞
-                else
+                else if ([entity.comments count] == 2)
                 {
-                    //但是有评论
-                    if([entity.comments count] == 1)
+                    for (int i = 0; i<=1; i++)
                     {
-                        Comments *comment = [entity.comments objectAtIndex:0];
+                        Comments *previousComment = nil;
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        if(i == 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, commentSize.height)];
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+preCommentSize.height, 300, commentSize.height)];
                         commentLabel1.numberOfLines = 0;
                         commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
                         NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                        [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
                         [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
                         [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
                         commentLabel1.attributedText = commentText;
                         buttonPostion += commentSize.height;
-                        [cell addSubview:commentLabel1];
+                        [cell.contentView addSubview:commentLabel1];
+                        [cell.contentView addSubview:userNameBtn];
                     }
-                    else if ([entity.comments count] == 2)
+                }
+                else if ([entity.comments count] >= 3)
+                {
+                    for (int i = 0; i<=2; i++)
                     {
-                        for (int i = 0; i<=1; i++)
+                        Comments *previousComment = nil;
+                        Comments *firstComment = [entity.comments firstObject];
+                        CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        if(i >= 1)
                         {
-                            Comments *previousComment = nil;
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            if(i == 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+preCommentSize.height, 300, commentSize.height)];
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            buttonPostion += commentSize.height;
-                            [cell addSubview:commentLabel1];
+                            previousComment = [entity.comments objectAtIndex:i-1];
                         }
+                        
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+size.height+20+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+size.height+preCommentSize.height, 300, commentSize.height)];
+                        if(i ==2)
+                        {
+                            commentLabel1.frame = CGRectMake(20, 0+300+size.height+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
+                            userNameBtn.frame = CGRectMake(20, 0+300+size.height+preCommentSize.height+firstCommentSize.height, nameStringSize.width, 20);
+                        }
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        //NSLog(@"comment:%@",comment.commentContent);
+                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                        commentLabel1.attributedText = commentText;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
+                        buttonPostion += commentSize.height;
+                        
                     }
-                    else if ([entity.comments count] >= 3)
+                }
+                
+            }
+        }
+        //没帖子内容
+        else
+        {
+            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:FONTSIZE]};
+            //有点赞
+            if(entity.numberOfLikes > 0)
+            {
+                UILabel *likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, 20)];
+                likeLabel.numberOfLines = 0;
+                likeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+                likeLabel.text = [NSString stringWithFormat:@"%d 条称赞",entity.numberOfLikes];
+                UIImageView *likesIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"like.png"]];
+                likesIcon.frame = CGRectMake(2, 0+300+4, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+                [cell.contentView addSubview:likesIcon];
+                [cell.contentView addSubview:likeLabel];
+                buttonPostion += 20;
+                
+                //有评论
+                if([entity.comments count] == 1)
+                {
+                    Comments *comment = [entity.comments objectAtIndex:0];
+                    CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                    UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                    userNameBtn.frame = CGRectMake(20, 0+300+20, nameStringSize.width, 20);
+                    [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    userNameBtn.tag = comment.userID;
+                    
+                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20, 300, commentSize.height)];
+                    commentLabel1.numberOfLines = 0;
+                    commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                    [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                    [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                    [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                    commentLabel1.attributedText = commentText;
+                    buttonPostion += commentSize.height;
+                    [cell.contentView addSubview:userNameBtn];
+                    [cell.contentView addSubview:commentLabel1];
+                }
+                else if ([entity.comments count] == 2)
+                {
+                    for (int i = 0; i<=1; i++)
                     {
-                        for (int i = 0; i<=2; i++)
+                        Comments *previousComment = nil;
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        if(i == 1)
                         {
-                            Comments *previousComment = nil;
-                            Comments *firstComment = [entity.comments firstObject];
-                            CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            if(i >= 1)
-                            {
-                                previousComment = [entity.comments objectAtIndex:i-1];
-                            }
-                            
-                            Comments *comment = [entity.comments objectAtIndex:i];
-                            CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-                            UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+preCommentSize.height, 300, commentSize.height)];
-                            commentLabel1.numberOfLines = 0;
-                            if(i ==2)
-                            {
-                                commentLabel1.frame = CGRectMake(20, 0+300+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
-                            }
-                            commentLabel1.numberOfLines = 0;
-                            commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
-                            //NSLog(@"comment:%@",comment.commentContent);
-                            NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
-                            [commentText addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, [comment.userName length])];
-                            [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
-                            [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
-                            commentLabel1.attributedText = commentText;
-                            buttonPostion += commentSize.height;
-                            [cell addSubview:commentLabel1];
+                            previousComment = [entity.comments objectAtIndex:i-1];
                         }
+                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+20+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20+preCommentSize.height, 300, commentSize.height)];
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                        commentLabel1.attributedText = commentText;
+                        buttonPostion += commentSize.height;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
+                    }
+                }
+                else if ([entity.comments count] >= 3)
+                {
+                    for (int i = 0; i<=2; i++)
+                    {
+                        Comments *previousComment = nil;
+                        Comments *firstComment = [entity.comments firstObject];
+                        CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        if(i >= 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
+                        
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+30020+preCommentSize.height, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+20+preCommentSize.height, 300, commentSize.height)];
+                        if(i == 2)
+                        {
+                            commentLabel1.frame = CGRectMake(20, 0+300+20+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
+                            userNameBtn.frame = CGRectMake(20, 0+300+20+preCommentSize.height+firstCommentSize.height, nameStringSize.width, 20);
+                        }
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        //NSLog(@"comment:%@",comment.commentContent);
+                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                        commentLabel1.attributedText = commentText;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
+                        buttonPostion += commentSize.height;
+                    }
+                }
+                
+            }
+            //没点赞
+            else
+            {
+                //但是有评论
+                if([entity.comments count] == 1)
+                {
+                    Comments *comment = [entity.comments objectAtIndex:0];
+                    CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                    UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                    userNameBtn.frame = CGRectMake(20, 0+300+20, nameStringSize.width, 20);
+                    [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    userNameBtn.tag = comment.userID;
+                    
+                    UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300, 300, commentSize.height)];
+                    commentLabel1.numberOfLines = 0;
+                    commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                    NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                    [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                    [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                    [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                    commentLabel1.attributedText = commentText;
+                    buttonPostion += commentSize.height;
+                    [cell.contentView addSubview:userNameBtn];
+                    [cell.contentView addSubview:commentLabel1];
+                }
+                else if ([entity.comments count] == 2)
+                {
+                    for (int i = 0; i<=1; i++)
+                    {
+                        Comments *previousComment = nil;
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        if(i == 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
+                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+20, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0+300+preCommentSize.height, 300, commentSize.height)];
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                        commentLabel1.attributedText = commentText;
+                        buttonPostion += commentSize.height;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
+                    }
+                }
+                else if ([entity.comments count] >= 3)
+                {
+                    for (int i = 0; i<=2; i++)
+                    {
+                        Comments *previousComment = nil;
+                        Comments *firstComment = [entity.comments firstObject];
+                        CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        if(i >= 1)
+                        {
+                            previousComment = [entity.comments objectAtIndex:i-1];
+                        }
+                        
+                        Comments *comment = [entity.comments objectAtIndex:i];
+                        CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                        UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                        CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
+                        userNameBtn.frame = CGRectMake(20, 0+300+20, nameStringSize.width, 20);
+                        [userNameBtn addTarget:self action:@selector(userButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                        userNameBtn.tag = comment.userID;
+                        
+                        UILabel *commentLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0+300+preCommentSize.height, 300, commentSize.height)];
+                        commentLabel1.numberOfLines = 0;
+                        if(i ==2)
+                        {
+                            commentLabel1.frame = CGRectMake(20, 0+300+preCommentSize.height+firstCommentSize.height, 300, commentSize.height);
+                            userNameBtn.frame = CGRectMake(20, 0+300+preCommentSize.height+firstCommentSize.height, nameStringSize.width, 20);
+                        }
+                        commentLabel1.numberOfLines = 0;
+                        commentLabel1.font = [UIFont systemFontOfSize:FONTSIZE];
+                        //NSLog(@"comment:%@",comment.commentContent);
+                        NSMutableAttributedString *commentText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:%@",comment.userName,comment.commentContent]];
+                        [commentText addAttribute:NSForegroundColorAttributeName value:COLOR(R, G, B, 1) range:NSMakeRange(0, [comment.userName length])];
+                        [self updateCommentString:commentText.mutableString withRegexExp:topicRegex resultString:commentText];
+                        [self updateCommentString:commentText.mutableString withRegexExp:atSignRegex resultString:commentText];
+                        commentLabel1.attributedText = commentText;
+                        buttonPostion += commentSize.height;
+                        [cell.contentView addSubview:userNameBtn];
+                        [cell.contentView addSubview:commentLabel1];
                     }
                 }
             }
         }
-        UIButton *commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        commentButton.frame = CGRectMake(20, buttonPostion, 40, 30);
-        [commentButton setTitle:@"评论" forState:UIControlStateNormal];
-        commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:commentButton];
-        UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        likeButton.frame = CGRectMake(70, buttonPostion, 40, 30);
-        [likeButton setTitle:@"赞" forState:UIControlStateNormal];
-        [cell addSubview:likeButton];
-        [likeButton addTarget:self action:@selector(like) forControlEvents:UIControlEventTouchUpInside];
     }
+    UIButton *commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    commentButton.frame = CGRectMake(20, buttonPostion, 40, 30);
+    [commentButton setTitle:@"评论" forState:UIControlStateNormal];
+    commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:commentButton];
+    UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    likeButton.frame = CGRectMake(70, buttonPostion, 40, 30);
+    [likeButton setTitle:@"赞" forState:UIControlStateNormal];
+    [cell.contentView addSubview:likeButton];
+    [likeButton addTarget:self action:@selector(like) forControlEvents:UIControlEventTouchUpInside];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     loadMoreFooter.frame = CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height);
     return cell;
@@ -569,10 +686,25 @@
 {
     NSLog(@"refresh");
     [SVProgressHUD dismiss];
-    _tweets = media;
+    self.tweets = media;
     [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
     [self.refreshControl endRefreshing];
     [self finishedLoading];
+}
+
+- (void)handleErrorSituation:(ErrorType)errorType
+{
+    if(errorType == ERROR_TYPE_NOT_AUTHORIZED)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"未授权" message:@"该用户设置为隐私账户" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if(errorType == ERROR_TYPE_TIME_OUT)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"超时" message:@"获取信息超时，请检查网络后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    [SVProgressHUD dismiss];
 }
 
 - (void)loadMoreTableFooterDidTriggerLoadMore:(LoadMoreTableFooterView *)view
