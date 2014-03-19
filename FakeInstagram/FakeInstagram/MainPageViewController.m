@@ -50,15 +50,13 @@
     loadMoreFooter = [[LoadMoreTableFooterView alloc] initWithFrame:CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
     loadMoreFooter.backgroundColor = [UIColor clearColor];
     loadMoreFooter.delegate = self;
-    UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshAction)];
-    self.navigationItem.rightBarButtonItem = refresh;
     [self.tableView addSubview:loadMoreFooter];
     //[self.tableView addSubview:refreshHeader];
 }
 
 - (void)refreshAction
 {
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height) animated:YES];
+    //[self.tableView scrollRectToVisible:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height) animated:YES];
     //防止多次获取数据，可能网络差获取比较慢，如果再点次刷新，可能就会得到两次返回的数据，so刷新时取消当前的请求
     for (AFHTTPRequestOperation *op in manager.operations)
     {
@@ -70,7 +68,6 @@
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];
     [manager.tweetsArray removeAllObjects];
     [manager startOperationWithRequesType:GET_FEED];
-    
 }
 
 - (void)like

@@ -43,13 +43,13 @@ static IGManager *sharedInstance = nil;
             requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@",BASE_URL,INSTAGRAM_GET_MYUSER_INFO,token]];
             break;
         case 1:
-            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=15",BASE_URL,INSTAGRAM_GET_MYUSER_MEDIA_RECENT,token]];
+            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=12",BASE_URL,INSTAGRAM_GET_MYUSER_MEDIA_RECENT,token]];
             break;
         case 2:
             requestUrl = [NSURL URLWithString:self.nextUrl];
             break;
         case 3:
-            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=20",BASE_URL,INSTAGRAM_GET_MYUSER_FEED,token]];
+            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=10",BASE_URL,INSTAGRAM_GET_MYUSER_FEED,token]];
             break;
         case 4:
             requestUrl = [NSURL URLWithString:self.nextUrl];
@@ -59,7 +59,7 @@ static IGManager *sharedInstance = nil;
         case 6:
             break;
         case 7:
-            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=20",BASE_URL,INSTAGRAM_GET_LIKED,token]];
+            requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?access_token=%@&count=10",BASE_URL,INSTAGRAM_GET_LIKED,token]];
             break;
         case 8:
             requestUrl = [NSURL URLWithString:self.nextUrl];

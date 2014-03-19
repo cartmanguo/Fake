@@ -43,8 +43,6 @@
     loadMoreFooter = [[LoadMoreTableFooterView alloc] initWithFrame:CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
     loadMoreFooter.backgroundColor = [UIColor clearColor];
     loadMoreFooter.delegate = self;
-    UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshAction)];
-    self.navigationItem.rightBarButtonItem = refresh;
     //self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.2 green:0.3 blue:0.6 alpha:1.0];
     [self.tableView addSubview:loadMoreFooter];
     //[self.tableView addSubview:refreshHeader];

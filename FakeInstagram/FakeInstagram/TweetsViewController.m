@@ -12,7 +12,7 @@
 #import "UserInfoViewController.h"
 #define FONTSIZE 13
 #define SMALL_ICON_SIZE 12
-#define COLOR(R, G, B, A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
+
 #define R 51
 #define G 116
 #define B 219
@@ -690,6 +690,7 @@
     [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
     [self.refreshControl endRefreshing];
     [self finishedLoading];
+    
 }
 
 - (void)handleErrorSituation:(ErrorType)errorType
