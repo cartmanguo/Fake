@@ -27,7 +27,14 @@
 - (void)viewDidLoad
 {
 	// Do any additional setup after loading the view.
-    self.title = @"Liked";
+    //self.title = @"Liked";
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, 70, 40)];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:116.0/255.0 blue:185.0/255.0 alpha:1.0];
+    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21];
+    self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
+    [self.navigationItem.titleView addSubview:titleLabel];
+    titleLabel.text = NSLocalizedString(@"liked_title", nil);
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.refreshControl = [[UIRefreshControl alloc] init];

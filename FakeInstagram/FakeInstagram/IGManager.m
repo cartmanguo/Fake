@@ -242,17 +242,17 @@ static IGManager *sharedInstance = nil;
 
 - (void)parseReceivedData:(NSDictionary *)data
 {
-    NSDictionary *infoDic = [self.receivedInfo objectForKey:@"data"];
-    NSDictionary *countDic = [infoDic objectForKey:@"counts"];
-    NSInteger followedCount = [[countDic objectForKey:@"follows"] integerValue];
-    NSInteger followersCount = [[countDic objectForKey:@"followed_by"] integerValue];
-    NSInteger tweetCount = [[countDic objectForKey:@"media"] integerValue];
+    NSDictionary *infoDic = (self.receivedInfo)[@"data"];
+    NSDictionary *countDic = infoDic[@"counts"];
+    NSInteger followedCount = [countDic[@"follows"] integerValue];
+    NSInteger followersCount = [countDic[@"followed_by"] integerValue];
+    NSInteger tweetCount = [countDic[@"media"] integerValue];
     
-    NSString *fullName = [infoDic objectForKey:@"full_name"];
-    NSInteger idNum = [[infoDic objectForKey:@"id"] integerValue];
-    NSString *photoUrl = [infoDic objectForKey:@"profile_picture"];
-    NSString *userName = [infoDic objectForKey:@"username"];
-    NSString *website = [infoDic objectForKey:@"website"];
+    NSString *fullName = infoDic[@"full_name"];
+    NSInteger idNum = [infoDic[@"id"] integerValue];
+    NSString *photoUrl = infoDic[@"profile_picture"];
+    NSString *userName = infoDic[@"username"];
+    NSString *website = infoDic[@"website"];
     Users *user = [[Users alloc] init];
     user.userID = idNum;
     user.userName = userName;
@@ -268,27 +268,27 @@ static IGManager *sharedInstance = nil;
 
 - (void)parseMediaInfo:(NSDictionary *)data
 {
-    NSArray *infoDic = [data objectForKey:@"data"];
+    NSArray *infoDic = data[@"data"];
     for (int i = 0; i<[infoDic count]; i++)
     {
-        NSDictionary *mediaInfoDic = [infoDic objectAtIndex:i];
+        NSDictionary *mediaInfoDic = infoDic[i];
         ///NSLog(@"media:%@",mediaInfoDic);
-        NSDictionary *dtail = [mediaInfoDic objectForKey:@"images"];
+        NSDictionary *dtail = mediaInfoDic[@"images"];
         //NSLog(@"dtl:%@",dtail);
-        NSDictionary *mediaDetail = [dtail objectForKey:@"thumbnail"];
-        NSString *mediaUrl = [mediaDetail objectForKey:@"url"];
+        NSDictionary *mediaDetail = dtail[@"thumbnail"];
+        NSString *mediaUrl = mediaDetail[@"url"];
         //NSLog(@"thumbnailurl:%@",mediaUrl);
         MessageEntity *mediaItem = [[MessageEntity alloc] init];
         mediaItem.imageUrl = mediaUrl;
         [_tweetsArray addObject:mediaItem];
     }
-    if([data objectForKey:@"pagination"])
+    if(data[@"pagination"])
     {
-        NSDictionary *more = [data objectForKey:@"pagination"];
+        NSDictionary *more = data[@"pagination"];
         if([[more allKeys] count] > 1)
         {
             self.hasMoreData = YES;
-            NSString *next_url = [more objectForKey:@"next_url"];
+            NSString *next_url = more[@"next_url"];
             self.nextUrl = next_url;
         }
         else

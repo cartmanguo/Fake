@@ -61,7 +61,7 @@
     else
     {
         UIImageView *cellImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photo-placeholder.png"]];
-        MessageEntity *mediaItem = [_userTweets objectAtIndex:indexPath.row];
+        MessageEntity *mediaItem = _userTweets[indexPath.row];
         [cellImage setImageWithURL:[NSURL URLWithString:mediaItem.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
         cell.backgroundView = cellImage;
     }
@@ -79,6 +79,7 @@
         UILabel *followedLabel = (UILabel *)[view viewWithTag:91];
         UILabel *followersLabel = (UILabel *)[view viewWithTag:92];
         UILabel *tweetLabel = (UILabel *)[view viewWithTag:93];
+        UILabel *userNameLabel = (UILabel *)[view viewWithTag:94];
         if(_user)
         {
             //NSLog(@"followed:%d",_user.followed);
@@ -89,6 +90,7 @@
             followedLabel.text = followedLabelNumber;
             followersLabel.text = followerLabelNumber;
             tweetLabel.text = tweetCountLabelNumber;
+            userNameLabel.text = _user.userName;
         }
         view.layer.borderWidth = 1.0;
         view.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -99,8 +101,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MessageEntity *entity = [_userTweets objectAtIndex:indexPath.row];
-    TweetDetailViewController *tweetDetailVC = [[TweetDetailViewController alloc] initWithTweet:[NSArray arrayWithObject:entity] style:UITableViewStylePlain];
+    MessageEntity *entity = _userTweets[indexPath.row];
+    TweetDetailViewController *tweetDetailVC = [[TweetDetailViewController alloc] initWithTweet:@[entity] style:UITableViewStylePlain];
     [self.navigationController pushViewController:tweetDetailVC animated:YES];
 }
 

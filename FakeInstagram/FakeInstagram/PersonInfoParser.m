@@ -12,17 +12,17 @@
 
 - (void)parsePersonInfoDictionary:(NSDictionary *)person
 {
-    NSDictionary *personInfo = [person objectForKey:DATA_KEY];
-    NSDictionary *countDic = [personInfo objectForKey:PERSON_INFO_KEY_COUNT];
-    NSInteger followedCount = [[countDic objectForKey:PERSON_INFO_KEY_FOLLOWING] integerValue];
-    NSInteger followersCount = [[countDic objectForKey:PERSON_INFO_KEY_FOLLOWER] integerValue];
-    NSInteger tweetCount = [[countDic objectForKey:PERSON_INFO_KEY_TWEETCOUNT] integerValue];
+    NSDictionary *personInfo = person[DATA_KEY];
+    NSDictionary *countDic = personInfo[PERSON_INFO_KEY_COUNT];
+    NSInteger followedCount = [countDic[PERSON_INFO_KEY_FOLLOWING] integerValue];
+    NSInteger followersCount = [countDic[PERSON_INFO_KEY_FOLLOWER] integerValue];
+    NSInteger tweetCount = [countDic[PERSON_INFO_KEY_TWEETCOUNT] integerValue];
     
-    NSString *fullName = [personInfo objectForKey:PERSON_INFO_KEY_FULL_NAME];
-    NSInteger idNum = [[personInfo objectForKey:PERSON_INFO_KEY_ID] integerValue];
-    NSString *photoUrl = [personInfo objectForKey:PERSON_INFO_KEY_PHOTOURL];
-    NSString *userName = [personInfo objectForKey:PERSON_INFO_KEY_NAME];
-    NSString *website = [personInfo objectForKey:PERSON_INFO_KEY_WEBSITE];
+    NSString *fullName = personInfo[PERSON_INFO_KEY_FULL_NAME];
+    NSInteger idNum = [personInfo[PERSON_INFO_KEY_ID] integerValue];
+    NSString *photoUrl = personInfo[PERSON_INFO_KEY_PHOTOURL];
+    NSString *userName = personInfo[PERSON_INFO_KEY_NAME];
+    NSString *website = personInfo[PERSON_INFO_KEY_WEBSITE];
     
     Users *user = [[Users alloc] init];
     user.userID = idNum;

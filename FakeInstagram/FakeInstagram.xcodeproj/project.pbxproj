@@ -106,6 +106,7 @@
 		F5A9FBEE18C06C690034386A /* TweetContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A9FBED18C06C690034386A /* TweetContentCell.m */; };
 		F5A9FBF118C06D740034386A /* InstagramMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A9FBF018C06D740034386A /* InstagramMessageCell.m */; };
 		F5A9FBF318C085CA0034386A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A9FBF218C085CA0034386A /* QuartzCore.framework */; };
+		F5AB627718E035C2005FA098 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5AB627918E035C2005FA098 /* Localizable.strings */; };
 		F5AB7FE918B6E5290037D83D /* IGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FE818B6E5290037D83D /* IGManager.m */; };
 		F5AB7FFE18B6EC880037D83D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FEC18B6EC880037D83D /* AFHTTPRequestOperation.m */; };
 		F5AB7FFF18B6EC880037D83D /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB7FEE18B6EC880037D83D /* AFHTTPRequestOperationManager.m */; };
@@ -151,6 +152,7 @@
 		F5AB9C2118B5EDA2001B7EA2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5AB9C1F18B5EDA2001B7EA2 /* InfoPlist.strings */; };
 		F5AB9C2318B5EDA2001B7EA2 /* FakeInstagramTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB9C2218B5EDA2001B7EA2 /* FakeInstagramTests.m */; };
 		F5AB9C2E18B5EE1A001B7EA2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5AB9C2D18B5EE1A001B7EA2 /* LoginViewController.m */; };
+		F5B7766118DC433A0076D197 /* instagram_nav_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B7766018DC433A0076D197 /* instagram_nav_bar.png */; };
 		F5CF338318BC987C00EFB4A4 /* JSONDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338218BC987C00EFB4A4 /* JSONDataParser.m */; };
 		F5CF338618BC98A200EFB4A4 /* PersonInfoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338518BC98A200EFB4A4 /* PersonInfoParser.m */; };
 		F5CF338918BC98C400EFB4A4 /* TweetItemsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CF338818BC98C400EFB4A4 /* TweetItemsParser.m */; };
@@ -297,6 +299,11 @@
 		F5A9FBEF18C06D740034386A /* InstagramMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramMessageCell.h; sourceTree = "<group>"; };
 		F5A9FBF018C06D740034386A /* InstagramMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstagramMessageCell.m; sourceTree = "<group>"; };
 		F5A9FBF218C085CA0034386A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F5AB626918E02B25005FA098 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		F5AB626A18E02B25005FA098 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		F5AB626B18E02B84005FA098 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/Main.storyboard"; sourceTree = "<group>"; };
+		F5AB627818E035C2005FA098 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		F5AB627A18E035C9005FA098 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F5AB7FE418B6E2420037D83D /* InstagramKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstagramKey.h; sourceTree = "<group>"; };
 		F5AB7FE718B6E5290037D83D /* IGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGManager.h; sourceTree = "<group>"; };
 		F5AB7FE818B6E5290037D83D /* IGManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGManager.m; sourceTree = "<group>"; };
@@ -376,6 +383,7 @@
 		F5AB9C2C18B5EE1A001B7EA2 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		F5AB9C2D18B5EE1A001B7EA2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		F5AB9C2F18B5EE3D001B7EA2 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		F5B7766018DC433A0076D197 /* instagram_nav_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram_nav_bar.png; sourceTree = "<group>"; };
 		F5CF338118BC987C00EFB4A4 /* JSONDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONDataParser.h; sourceTree = "<group>"; };
 		F5CF338218BC987C00EFB4A4 /* JSONDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONDataParser.m; sourceTree = "<group>"; };
 		F5CF338418BC98A200EFB4A4 /* PersonInfoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonInfoParser.h; sourceTree = "<group>"; };
@@ -476,6 +484,7 @@
 				4C13377218CF4C1A000FE097 /* home.png */,
 				4C13377318CF4C1A000FE097 /* image.png */,
 				4C13377418CF4C1A000FE097 /* instagram.png */,
+				F5B7766018DC433A0076D197 /* instagram_nav_bar.png */,
 				4C13377518CF4C1A000FE097 /* like.png */,
 				4C13377618CF4C1A000FE097 /* message.png */,
 				4C13377718CF4C1A000FE097 /* profile.png */,
@@ -771,6 +780,7 @@
 		F5AB9BFE18B5EDA2001B7EA2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F5AB627918E035C2005FA098 /* Localizable.strings */,
 				F5AB9BFF18B5EDA2001B7EA2 /* FakeInstagram-Info.plist */,
 				F5AB9C0018B5EDA2001B7EA2 /* InfoPlist.strings */,
 				F5AB9C0318B5EDA2001B7EA2 /* main.m */,
@@ -859,6 +869,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = F5AB9BEB18B5EDA2001B7EA2;
 			productRefGroup = F5AB9BF518B5EDA2001B7EA2 /* Products */;
@@ -899,6 +910,7 @@
 				F5A73EA018D2DFE600927BC9 /* flashing_auto.png in Resources */,
 				F5A73E9A18D2DFE600927BC9 /* camera_line.png in Resources */,
 				F5A7237318BC47150075A471 /* grayArrow.png in Resources */,
+				F5B7766118DC433A0076D197 /* instagram_nav_bar.png in Resources */,
 				F5A7236F18BC47150075A471 /* blackArrow.png in Resources */,
 				4C1337A218CF54FC000FE097 /* icon_57x57.png in Resources */,
 				F5A73E4618D2D3AF00927BC9 /* check_mark@2x.png in Resources */,
@@ -948,6 +960,7 @@
 				4C1337A618CF54FC000FE097 /* icon_120x120.png in Resources */,
 				4C13378318CF4C1A000FE097 /* like.png in Resources */,
 				F5A73E9E18D2DFE600927BC9 /* close_cha.png in Resources */,
+				F5AB627718E035C2005FA098 /* Localizable.strings in Resources */,
 				4C13377F18CF4C1A000FE097 /* dog.jpg in Resources */,
 				F5A73E4C18D2D3AF00927BC9 /* profile@2x.png in Resources */,
 			);
@@ -1049,10 +1062,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		F5AB627918E035C2005FA098 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5AB627818E035C2005FA098 /* zh-Hans */,
+				F5AB627A18E035C9005FA098 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F5AB9C0018B5EDA2001B7EA2 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F5AB9C0118B5EDA2001B7EA2 /* en */,
+				F5AB626918E02B25005FA098 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1061,6 +1084,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				F5AB9C0A18B5EDA2001B7EA2 /* Base */,
+				F5AB626B18E02B84005FA098 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1069,6 +1093,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				F5AB9C2018B5EDA2001B7EA2 /* en */,
+				F5AB626A18E02B25005FA098 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

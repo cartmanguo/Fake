@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Alpha. All rights reserved.
 //
 
-typedef enum RequestType
+typedef NS_ENUM(NSInteger, RequestTypes)
 {
     GET_SELF_INFO=0,
     GET_SELF_FEED,
@@ -18,13 +18,13 @@ typedef enum RequestType
     GET_LIKED,
     GET_MORE_LIKED,
     GET_USER_INFO,
-}RequestTypes;
+};
 
-typedef enum ErrorTypes
+typedef NS_ENUM(NSInteger, ErrorType)
 {
     ERROR_TYPE_TIME_OUT=-1001,
     ERROR_TYPE_NOT_AUTHORIZED=-1011,
-}ErrorType;
+};
 
 @class Users;
 @class MessageEntity;

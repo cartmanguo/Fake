@@ -162,7 +162,7 @@
 - (void)addStillImageOutput {
     
     AVCaptureStillImageOutput *tmpOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];//输出jpeg
+    NSDictionary *outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG};//输出jpeg
     tmpOutput.outputSettings = outputSettings;
     
 //    AVCaptureConnection *videoConnection = [self findVideoConnection];

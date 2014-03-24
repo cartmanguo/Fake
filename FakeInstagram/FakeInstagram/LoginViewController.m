@@ -58,7 +58,7 @@
     if ([UrlParts count] > 1)
     {
         // do any of the following here
-        urlString = [UrlParts objectAtIndex:1];
+        urlString = UrlParts[1];
         NSRange accessToken = [urlString rangeOfString: @"#access_token="];
         if (accessToken.location != NSNotFound) {
             NSString* strAccessToken = [urlString substringFromIndex: NSMaxRange(accessToken)];

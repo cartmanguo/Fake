@@ -19,7 +19,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0L-JC-2B7">
                                 <rect key="frame" x="137" y="425" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login">
+                                <state key="normal" title="登陆">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -161,11 +161,11 @@
             </objects>
             <point key="canvasLocation" x="-2499" y="3181"/>
         </scene>
-        <!--Navigation Controller - Browse-->
+        <!--Navigation Controller - 搜索-->
         <scene sceneID="Icp-mf-H3J">
             <objects>
                 <navigationController definesPresentationContext="YES" id="j2z-M7-YDw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Browse" image="search.png" id="VgX-C4-l5X"/>
+                    <tabBarItem key="tabBarItem" title="搜索" image="search.png" id="VgX-C4-l5X"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mOv-rh-GmS">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -177,11 +177,11 @@
             </objects>
             <point key="canvasLocation" x="-2491" y="2473"/>
         </scene>
-        <!--Navigation Controller - Liked-->
+        <!--Navigation Controller - 喜欢-->
         <scene sceneID="dtg-MA-jou">
             <objects>
                 <navigationController definesPresentationContext="YES" id="8fX-Rs-a0K" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Liked" image="like.png" id="6HO-SM-iQP"/>
+                    <tabBarItem key="tabBarItem" title="喜欢" image="like.png" id="6HO-SM-iQP"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="l5I-DQ-b9r">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -193,11 +193,11 @@
             </objects>
             <point key="canvasLocation" x="-2499" y="1781"/>
         </scene>
-        <!--Navigation Controller - Profile-->
+        <!--Navigation Controller - 档案-->
         <scene sceneID="IKV-7l-583">
             <objects>
                 <navigationController definesPresentationContext="YES" id="j0q-oj-gRg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" image="profile.png" id="rfL-HJ-dCg"/>
+                    <tabBarItem key="tabBarItem" title="档案" image="profile.png" id="rfL-HJ-dCg"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZCO-n0-vDP">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -246,15 +246,15 @@
                                     <rect key="frame" x="123" y="14" width="56" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Followed">
+                                    <state key="normal" title="关注">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ChV-YE-0R4">
-                                    <rect key="frame" x="187" y="14" width="58" height="30"/>
+                                    <rect key="frame" x="187" y="14" width="57" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Followers">
+                                    <state key="normal" title="粉丝">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -262,7 +262,7 @@
                                     <rect key="frame" x="252" y="14" width="46" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Tweets">
+                                    <state key="normal" title="帖子">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -292,11 +292,10 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="94" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MK8-aT-fqH">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="94" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3Z-mM-12Y">
                                     <rect key="frame" x="6" y="98" width="94" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -312,11 +311,11 @@
             </objects>
             <point key="canvasLocation" x="-2061" y="1061"/>
         </scene>
-        <!--Navigation Controller - Friends-->
+        <!--Navigation Controller - 朋友圈-->
         <scene sceneID="oqQ-OB-tPk">
             <objects>
                 <navigationController definesPresentationContext="YES" id="1Qh-NK-rY8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Friends" image="image.png" id="sbM-7w-Aod"/>
+                    <tabBarItem key="tabBarItem" title="朋友圈" image="image.png" id="sbM-7w-Aod"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8zk-fk-XGV">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -395,15 +394,15 @@
                                     <rect key="frame" x="123" y="14" width="56" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Followed">
+                                    <state key="normal" title="关注">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMi-wP-jBg">
-                                    <rect key="frame" x="187" y="14" width="58" height="30"/>
+                                    <rect key="frame" x="187" y="14" width="57" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Followers">
+                                    <state key="normal" title="粉丝">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -411,7 +410,7 @@
                                     <rect key="frame" x="252" y="14" width="46" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <state key="normal" title="Tweets">
+                                    <state key="normal" title="帖子">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -441,7 +440,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="94" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3N-zH-2BV">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="94" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRE-8h-oYb">
                                     <rect key="frame" x="6" y="98" width="94" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>

@@ -168,7 +168,7 @@ static BOOL AFCertificateHostMatchesDomain(NSString *certificateHost, NSString *
     }
     
     BOOL certificateHostMatchesDomain = ([certificateHostComponents indexOfObjectPassingTest:^BOOL(NSString *certificateHostComponent, NSUInteger idx, __unused BOOL *stop) {
-        NSString *domainComponent = [domainComponents objectAtIndex:idx];
+        NSString *domainComponent = domainComponents[idx];
 
         return AFDomainComponentCompare(certificateHostComponent, domainComponent) != NSOrderedSame;
     }] == NSNotFound);

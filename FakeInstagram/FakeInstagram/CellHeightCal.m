@@ -27,7 +27,7 @@
     {
         if([comments count] == 1)
         {
-            Comments *comment = [comments objectAtIndex:0];
+            Comments *comment = comments[0];
             if([comment.commentContent length] > 0)
             {
                 NSString *commentContent = comment.commentContent;
@@ -39,12 +39,12 @@
         }
         else if([comments count] == 2)
         {
-            Comments *comment = [comments objectAtIndex:0];
+            Comments *comment = comments[0];
             if([comment.commentContent length] > 0)
             {
                 for (int i = 0; i<=1; i++)
                 {
-                    Comments *comment = [comments objectAtIndex:i];
+                    Comments *comment = comments[i];
                     if([comment.commentContent length] > 0)
                     {
                         NSString *commentContent = comment.commentContent;
@@ -61,7 +61,7 @@
         {
             for (int i = 0; i<=2; i++)
             {
-                Comments *comment = [comments objectAtIndex:i];
+                Comments *comment = comments[i];
                 if([comment.commentContent length] > 0)
                 {
                     NSString *commentContent = comment.commentContent;

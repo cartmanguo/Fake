@@ -76,7 +76,7 @@ static bool AmIBeingDebugged(void)
 
 + (void)initialize
 {	
-	NSString *simulatorRoot = [[[NSProcessInfo processInfo] environment] objectForKey:@"IPHONE_SIMULATOR_ROOT"];
+	NSString *simulatorRoot = [[NSProcessInfo processInfo] environment][@"IPHONE_SIMULATOR_ROOT"];
 	if (simulatorRoot)
 	{
 		void *AppSupport = dlopen([[simulatorRoot stringByAppendingPathComponent:@"/System/Library/PrivateFrameworks/AppSupport.framework/AppSupport"] fileSystemRepresentation], RTLD_LAZY);
@@ -108,7 +108,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 		for (unsigned int i = 0; i < count; i++)
 		{
 			objc_property_t property = properties[i];
-			NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
+			NSString *propertyName = @(property_getName(property));
 			[textInputTraitsProperties addObject:propertyName];
 		}
 		free(properties);
@@ -1116,7 +1116,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
         return;
     }
     
-    [self selectView:[self.currentViewHistory objectAtIndex:indexOfCurrentView - 1]];
+    [self selectView:(self.currentViewHistory)[indexOfCurrentView - 1]];
 }
 
 - (void)moveDownToFirstSubview {
@@ -1124,7 +1124,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
         return;
     
     if (self.currentView.subviews.count>0) {
-        [self selectView:[self.currentView.subviews objectAtIndex:0]];
+        [self selectView:(self.currentView.subviews)[0]];
     } else{
         NSLog(@"DCIntrospect-ARC: No subviews.");
     }
@@ -1139,7 +1139,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
     if (currentViewsIndex==NSNotFound) {
         NSLog(@"DCIntrospect-ARC: BROKEN HIERARCHY.");
     } else if (self.currentView.superview.subviews.count>currentViewsIndex + 1) {
-        [self selectView:[self.currentView.superview.subviews objectAtIndex:currentViewsIndex + 1]];
+        [self selectView:(self.currentView.superview.subviews)[currentViewsIndex + 1]];
     } else{
         NSLog(@"DCIntrospect-ARC: No next sibling views.");
     }
@@ -1153,7 +1153,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
     if (currentViewsIndex==NSNotFound) {
         NSLog(@"DCIntrospect-ARC: BROKEN HIERARCHY.");
     } else if (currentViewsIndex!=0) {
-        [self selectView:[self.currentView.superview.subviews objectAtIndex:currentViewsIndex - 1]];
+        [self selectView:(self.currentView.superview.subviews)[currentViewsIndex - 1]];
     } else {
         NSLog(@"DCIntrospect-ARC: No previous sibling views.");
     }
@@ -1494,7 +1494,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 	if ([value isKindOfClass:[NSValue class]])
 	{
 		// print out the return for each value depending on type
-		NSString *type = [NSString stringWithUTF8String:[value objCType]];
+		NSString *type = @([value objCType]);
 		if ([type isEqualToString:@"c"])
 		{
 			return ([value boolValue]) ? @"YES" : @"NO";
@@ -1745,7 +1745,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 		for (unsigned int i = 0; i < count; ++i)
 		{
 			// get the property name and selector name
-			NSString *propertyName = [NSString stringWithCString:property_getName(properties[i]) encoding:NSUTF8StringEncoding];
+			NSString *propertyName = @(property_getName(properties[i]));
 			
 			SEL sel = NSSelectorFromString(propertyName);
 			if ([object respondsToSelector:sel])
@@ -1754,7 +1754,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 				@try
 				{
 					// get the return object and type for the selector
-					NSString *returnType = [NSString stringWithUTF8String:[[object methodSignatureForSelector:sel] methodReturnType]];
+					NSString *returnType = @([[object methodSignatureForSelector:sel] methodReturnType]);
 					id returnObject = [object valueForKey:propertyName];
 					if ([returnType isEqualToString:@"c"])
 						returnObject = [NSNumber numberWithBool:[returnObject intValue] != 0];
@@ -1812,7 +1812,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
         [outputString appendFormat:@"identifier: %@\n", [object accessibilityIdentifier]];
     }
 	[outputString appendFormat:@"      hint: %@\n", [object accessibilityHint]];
-	[outputString appendFormat:@"    traits: %@\n", [self describeProperty:@"accessibilityTraits" value:[NSNumber numberWithUnsignedLongLong:[object accessibilityTraits]]]];
+	[outputString appendFormat:@"    traits: %@\n", [self describeProperty:@"accessibilityTraits" value:@([object accessibilityTraits])]];
 	[outputString appendFormat:@"     value: %@\n", [object accessibilityValue]];
 	[outputString appendFormat:@"     frame: %@\n", NSStringFromCGRect([object accessibilityFrame])];
 	[outputString appendString:@"\n"];
@@ -1865,7 +1865,7 @@ id UITextInputTraits_valueForKey(id self, SEL _cmd, NSString *key)
 	if (windows.count == 0)
 		return nil;
 	
-	return [windows objectAtIndex:0];
+	return windows[0];
 }
 
 - (NSMutableArray *)viewsAtPoint:(CGPoint)touchPoint inView:(UIView *)view

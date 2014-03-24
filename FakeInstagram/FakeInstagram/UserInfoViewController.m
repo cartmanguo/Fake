@@ -50,7 +50,7 @@
     refreshHeader.delegate = self;
     [self.collectionView addSubview:refreshHeader];
     [self.collectionView addSubview:loadMoreFooter];
-    self.title = @"Profile";
+    //self.title = @"Profile";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColCell"];
 
     [manager getPersonInfoWithUserID:_userID];

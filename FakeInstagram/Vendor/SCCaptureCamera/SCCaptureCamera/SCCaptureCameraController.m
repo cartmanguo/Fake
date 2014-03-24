@@ -288,10 +288,10 @@
         UIView *parent = (!isHigherThaniPhone4_SC && i == 0 ? _bottomContainerView : _cameraMenuView);
         
         UIButton * btn = [self buildButton:CGRectMake(eachW * i, 0, eachW, theH)
-                              normalImgStr:[normalArr objectAtIndex:i]
-                           highlightImgStr:[highlightArr objectAtIndex:i]
-                            selectedImgStr:[selectedArr objectAtIndex:i]
-                                    action:NSSelectorFromString([actionArr objectAtIndex:i])
+                              normalImgStr:normalArr[i]
+                           highlightImgStr:highlightArr[i]
+                            selectedImgStr:selectedArr[i]
+                                    action:NSSelectorFromString(actionArr[i])
                                 parentView:parent];
         
         btn.showsTouchWhenHighlighted = YES;

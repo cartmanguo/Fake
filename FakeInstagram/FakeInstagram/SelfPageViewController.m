@@ -26,6 +26,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, 70, 40)];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:116.0/255.0 blue:185.0/255.0 alpha:1.0];
+    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21];
+    self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
+    [self.navigationItem.titleView addSubview:titleLabel];
+    titleLabel.text = NSLocalizedString(@"profile_title", nil);
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeBlack];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     manager = [[IGManager alloc] init];
@@ -38,7 +45,7 @@
     refreshHeader.delegate = self;
     [self.collectionView addSubview:refreshHeader];
     [self.collectionView addSubview:loadMoreFooter];
-    self.title = @"Profile";
+    //self.title = @"Profile";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColCell"];
     //NSString *token = [igManager token];
     [manager startOperationWithRequesType:GET_SELF_INFO];

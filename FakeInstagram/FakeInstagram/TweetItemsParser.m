@@ -23,28 +23,28 @@
 
 - (void)parseTweetItems:(NSDictionary *)tweetInfo type:(RequestTypes)type
 {
-    NSArray *allTweets = [tweetInfo objectForKey:DATA_KEY];
+    NSArray *allTweets = tweetInfo[DATA_KEY];
     int tweetCount = [allTweets count];
     for(int i = 0; i < tweetCount; i++)
     {
         //NSMutableArray *comments = [NSMutableArray array];
         MessageEntity *entity = [[MessageEntity alloc] init];
         NSMutableArray *cmts = [[NSMutableArray alloc] init];
-        NSDictionary *singleTweetInfo = [allTweets objectAtIndex:i];
-        NSDictionary *userInfo = [singleTweetInfo objectForKey:@"user"];
+        NSDictionary *singleTweetInfo = allTweets[i];
+        NSDictionary *userInfo = singleTweetInfo[@"user"];
         NSString *tweetMessage = nil;
-        NSString *userName = [userInfo objectForKey:@"username"];
-        NSString *profilePicUrl = [userInfo objectForKey:@"profile_picture"];
-        NSDictionary *tweetContentInfo = [singleTweetInfo objectForKey:@"caption"];
-        NSInteger userId = [[userInfo objectForKey:@"id"] integerValue];
+        NSString *userName = userInfo[@"username"];
+        NSString *profilePicUrl = userInfo[@"profile_picture"];
+        NSDictionary *tweetContentInfo = singleTweetInfo[@"caption"];
+        NSInteger userId = [userInfo[@"id"] integerValue];
         if(![tweetContentInfo isKindOfClass:[NSNull class]])
         {
-            tweetMessage = [tweetContentInfo objectForKey:@"text"];
-            entity.createdTime = [[tweetContentInfo objectForKey:@"created_time"] integerValue];
+            tweetMessage = tweetContentInfo[@"text"];
+            entity.createdTime = [tweetContentInfo[@"created_time"] integerValue];
         }
         else
         {
-            entity.createdTime = [[singleTweetInfo objectForKey:@"created_time"] integerValue];
+            entity.createdTime = [singleTweetInfo[@"created_time"] integerValue];
         }
         //NSString *tweetMessage = [singleTweetInfo objectForKey:@"text"];
         entity.userName = userName;
@@ -54,24 +54,24 @@
         user.userID = userId;
         entity.user = user;
         
-        NSDictionary *imageInfo = [singleTweetInfo objectForKey:@"images"];
-        NSDictionary *thumbnailImageInfo = [imageInfo objectForKey:@"standard_resolution"];
-        NSString *thumbnailImageUrl = [thumbnailImageInfo objectForKey:@"url"];
-        NSDictionary *CommentsInfo = [singleTweetInfo objectForKey:@"comments"];
-        NSArray *allComments = [CommentsInfo objectForKey:DATA_KEY];
+        NSDictionary *imageInfo = singleTweetInfo[@"images"];
+        NSDictionary *thumbnailImageInfo = imageInfo[@"standard_resolution"];
+        NSString *thumbnailImageUrl = thumbnailImageInfo[@"url"];
+        NSDictionary *CommentsInfo = singleTweetInfo[@"comments"];
+        NSArray *allComments = CommentsInfo[DATA_KEY];
         entity.numberOfComments = [allComments count];
         entity.imageUrl = thumbnailImageUrl;
-        NSDictionary *likesInfo = [singleTweetInfo objectForKey:@"likes"];
-        NSInteger likesCount = [[likesInfo objectForKey:@"count"] integerValue];
+        NSDictionary *likesInfo = singleTweetInfo[@"likes"];
+        NSInteger likesCount = [likesInfo[@"count"] integerValue];
         entity.numberOfLikes = likesCount;
         for (int j = 0; j<[allComments count]; j++)
         {
-            NSDictionary *singleCommentInfo = [allComments objectAtIndex:j];
-            NSDictionary *commentUserInfo = [singleCommentInfo objectForKey:@"from"];
-            NSString *userName = [commentUserInfo objectForKey:@"username"];
-            NSString *profilePicUrl = [commentUserInfo objectForKey:@"profile_picture"];
-            NSString *commentContent = [singleCommentInfo objectForKey:@"text"];
-            NSInteger userID = [[commentUserInfo objectForKey:@"id"] integerValue];
+            NSDictionary *singleCommentInfo = allComments[j];
+            NSDictionary *commentUserInfo = singleCommentInfo[@"from"];
+            NSString *userName = commentUserInfo[@"username"];
+            NSString *profilePicUrl = commentUserInfo[@"profile_picture"];
+            NSString *commentContent = singleCommentInfo[@"text"];
+            NSInteger userID = [commentUserInfo[@"id"] integerValue];
             Comments *comment = [[Comments alloc] init];
             comment.userName = userName;
             comment.userID = userID;
@@ -83,12 +83,12 @@
         [_tweets addObject:entity];
         //NSLog(@"comments num:%d",[entity.comments count]);
     }
-    if([tweetInfo objectForKey:@"pagination"])
+    if(tweetInfo[@"pagination"])
     {
-        NSDictionary *more = [tweetInfo objectForKey:@"pagination"];
-        if([more objectForKey:@"next_url"])
+        NSDictionary *more = tweetInfo[@"pagination"];
+        if(more[@"next_url"])
         {
-            NSString *nextFeedUrl = [more objectForKey:@"next_url"];
+            NSString *nextFeedUrl = more[@"next_url"];
             self.nextUrl = nextFeedUrl;
             NSLog(@"more");
         }
@@ -101,27 +101,27 @@
 
 - (void)parseTweetItems:(NSDictionary *)tweetInfo
 {
-    NSArray *allTweets = [tweetInfo objectForKey:DATA_KEY];
+    NSArray *allTweets = tweetInfo[DATA_KEY];
     int tweetCount = [allTweets count];
     for(int i = 0; i < tweetCount; i++)
     {
         MessageEntity *entity = [[MessageEntity alloc] init];
         //NSMutableArray *cmts = [[NSMutableArray alloc] init];
-        NSDictionary *singleTweetInfo = [allTweets objectAtIndex:i];
-        NSDictionary *userInfo = [singleTweetInfo objectForKey:@"user"];
+        NSDictionary *singleTweetInfo = allTweets[i];
+        NSDictionary *userInfo = singleTweetInfo[@"user"];
         NSString *tweetMessage = nil;
-        NSString *userName = [userInfo objectForKey:@"username"];
-        NSString *profilePicUrl = [userInfo objectForKey:@"profile_picture"];
-        NSInteger userId = [[userInfo objectForKey:@"id"] integerValue];
-        NSDictionary *tweetContentInfo = [singleTweetInfo objectForKey:@"caption"];
+        NSString *userName = userInfo[@"username"];
+        NSString *profilePicUrl = userInfo[@"profile_picture"];
+        NSInteger userId = [userInfo[@"id"] integerValue];
+        NSDictionary *tweetContentInfo = singleTweetInfo[@"caption"];
         if(![tweetContentInfo isKindOfClass:[NSNull class]])
         {
-            tweetMessage = [tweetContentInfo objectForKey:@"text"];
-            entity.createdTime = [[tweetContentInfo objectForKey:@"created_time"] integerValue];
+            tweetMessage = tweetContentInfo[@"text"];
+            entity.createdTime = [tweetContentInfo[@"created_time"] integerValue];
         }
         else
         {
-            entity.createdTime = [[singleTweetInfo objectForKey:@"created_time"] integerValue];
+            entity.createdTime = [singleTweetInfo[@"created_time"] integerValue];
         }
         //NSString *tweetMessage = [singleTweetInfo objectForKey:@"text"];
         entity.userName = userName;
@@ -131,23 +131,23 @@
         user.userID = userId;
         entity.user = user;
         
-        NSDictionary *imageInfo = [singleTweetInfo objectForKey:@"images"];
-        NSDictionary *thumbnailImageInfo = [imageInfo objectForKey:@"standard_resolution"];
-        NSString *thumbnailImageUrl = [thumbnailImageInfo objectForKey:@"url"];
-        NSDictionary *CommentsInfo = [singleTweetInfo objectForKey:@"comments"];
-        NSArray *allComments = [CommentsInfo objectForKey:DATA_KEY];
+        NSDictionary *imageInfo = singleTweetInfo[@"images"];
+        NSDictionary *thumbnailImageInfo = imageInfo[@"standard_resolution"];
+        NSString *thumbnailImageUrl = thumbnailImageInfo[@"url"];
+        NSDictionary *CommentsInfo = singleTweetInfo[@"comments"];
+        NSArray *allComments = CommentsInfo[DATA_KEY];
         entity.numberOfComments = [allComments count];
         entity.imageUrl = thumbnailImageUrl;
-        NSDictionary *likesInfo = [singleTweetInfo objectForKey:@"likes"];
-        NSInteger likesCount = [[likesInfo objectForKey:@"count"] integerValue];
+        NSDictionary *likesInfo = singleTweetInfo[@"likes"];
+        NSInteger likesCount = [likesInfo[@"count"] integerValue];
         entity.numberOfLikes = likesCount;
         for (int j = 0; j<[allComments count]; j++)
         {
-            NSDictionary *singleCommentInfo = [allComments objectAtIndex:j];
-            NSDictionary *commentUserInfo = [singleCommentInfo objectForKey:@"from"];
-            NSString *userName = [commentUserInfo objectForKey:@"username"];
-            NSString *profilePicUrl = [commentUserInfo objectForKey:@"profile_picture"];
-            NSString *commentContent = [singleCommentInfo objectForKey:@"text"];
+            NSDictionary *singleCommentInfo = allComments[j];
+            NSDictionary *commentUserInfo = singleCommentInfo[@"from"];
+            NSString *userName = commentUserInfo[@"username"];
+            NSString *profilePicUrl = commentUserInfo[@"profile_picture"];
+            NSString *commentContent = singleCommentInfo[@"text"];
             Comments *comment = [[Comments alloc] init];
             comment.userName = userName;
             comment.user_picUrl = profilePicUrl;
@@ -156,12 +156,12 @@
         [_tweets addObject:entity];
         //NSLog(@"comments num:%d",[entity.comments count]);
     }
-    if([tweetInfo objectForKey:@"pagination"])
+    if(tweetInfo[@"pagination"])
     {
-        NSDictionary *more = [tweetInfo objectForKey:@"pagination"];
-        if([more objectForKey:@"next_url"])
+        NSDictionary *more = tweetInfo[@"pagination"];
+        if(more[@"next_url"])
         {
-            NSString *nextFeedUrl = [more objectForKey:@"next_url"];
+            NSString *nextFeedUrl = more[@"next_url"];
             self.nextUrl = nextFeedUrl;
             NSLog(@"more");
         }
@@ -175,27 +175,27 @@
 
 - (void)parseSelfFeeds:(NSDictionary *)selfFeeds
 {
-    NSArray *selfFeedsArray = [selfFeeds objectForKey:@"data"];
+    NSArray *selfFeedsArray = selfFeeds[@"data"];
     for (int i = 0; i<[selfFeedsArray count]; i++)
     {
-        NSDictionary *singleTweetInfo = [selfFeedsArray objectAtIndex:i];
+        NSDictionary *singleTweetInfo = selfFeedsArray[i];
         ///NSLog(@"media:%@",mediaInfoDic);
-        NSDictionary *imageInfo = [singleTweetInfo objectForKey:@"images"];
+        NSDictionary *imageInfo = singleTweetInfo[@"images"];
         //NSLog(@"dtl:%@",dtail);
-        NSDictionary *thumbnailImageInfo = [imageInfo objectForKey:@"thumbnail"];
-        NSString *thumbnailImageUrl = [thumbnailImageInfo objectForKey:@"url"];
+        NSDictionary *thumbnailImageInfo = imageInfo[@"thumbnail"];
+        NSString *thumbnailImageUrl = thumbnailImageInfo[@"url"];
         //NSLog(@"thumbnailurl:%@",mediaUrl);
         MessageEntity *mediaItem = [[MessageEntity alloc] init];
         mediaItem.imageUrl = thumbnailImageUrl;
         [_tweets addObject:mediaItem];
     }
-    if([selfFeeds objectForKey:@"pagination"])
+    if(selfFeeds[@"pagination"])
     {
-        NSDictionary *more = [selfFeeds objectForKey:@"pagination"];
+        NSDictionary *more = selfFeeds[@"pagination"];
         if([[more allKeys] count] > 1)
         {
             //self.hasMoreData = YES;
-            NSString *next_url = [more objectForKey:@"next_url"];
+            NSString *next_url = more[@"next_url"];
             [IGManager sharedInstance].nextUrl = next_url;
         }
         else

@@ -106,7 +106,7 @@
 {
     //    return 350.0;
     //    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    MessageEntity *entity = [_tweets objectAtIndex:indexPath.section];
+    MessageEntity *entity = _tweets[indexPath.section];
     return [CellHeightCal calculateCellHeightWithMessage:entity andComments:entity.comments];
 }
 
@@ -125,8 +125,7 @@
     }
     if(_tweets)
     {
-        //#符号，后面可匹配一个#符号和一个
-        MessageEntity *entity = [self.tweets objectAtIndex:indexPath.section];
+        MessageEntity *entity = (self.tweets)[indexPath.section];
         UIImageView *tweetImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
         tweetImageView.contentMode = UIViewContentModeScaleToFill;
         [tweetImageView setImageWithURL:[NSURL URLWithString:entity.imageUrl] placeholderImage:[UIImage imageNamed:@"photo-placeholder.png"]];
@@ -167,7 +166,7 @@
                 //有评论
                 if([entity.comments count] == 1)
                 {
-                    Comments *comment = [entity.comments objectAtIndex:0];
+                    Comments *comment = (entity.comments)[0];
                     CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                     UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
@@ -191,10 +190,10 @@
                     for (int i = 0; i<=1; i++)
                     {
                         Comments *previousComment = nil;
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         if(i == 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
@@ -227,10 +226,10 @@
                         CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         if(i >= 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         
@@ -270,7 +269,7 @@
                 //有评论
                 if([entity.comments count] == 1)
                 {
-                    Comments *comment = [entity.comments objectAtIndex:0];
+                    Comments *comment = (entity.comments)[0];
                     CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                     UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
@@ -295,10 +294,10 @@
                     for (int i = 0; i<=1; i++)
                     {
                         Comments *previousComment = nil;
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         if(i == 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
@@ -331,10 +330,10 @@
                         CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         if(i >= 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -386,7 +385,7 @@
                 //有评论
                 if([entity.comments count] == 1)
                 {
-                    Comments *comment = [entity.comments objectAtIndex:0];
+                    Comments *comment = (entity.comments)[0];
                     CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                     UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
@@ -411,10 +410,10 @@
                     for (int i = 0; i<=1; i++)
                     {
                         Comments *previousComment = nil;
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         if(i == 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
@@ -446,10 +445,10 @@
                         CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         if(i >= 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -485,7 +484,7 @@
                 //但是有评论
                 if([entity.comments count] == 1)
                 {
-                    Comments *comment = [entity.comments objectAtIndex:0];
+                    Comments *comment = (entity.comments)[0];
                     CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                     UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     CGSize nameStringSize = [comment.userName boundingRectWithSize:CGSizeMake(0, 20) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attribute context:nil].size;
@@ -510,10 +509,10 @@
                     for (int i = 0; i<=1; i++)
                     {
                         Comments *previousComment = nil;
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         if(i == 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
@@ -545,10 +544,10 @@
                         CGSize firstCommentSize = [firstComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         if(i >= 1)
                         {
-                            previousComment = [entity.comments objectAtIndex:i-1];
+                            previousComment = (entity.comments)[i-1];
                         }
                         
-                        Comments *comment = [entity.comments objectAtIndex:i];
+                        Comments *comment = (entity.comments)[i];
                         CGSize commentSize = [comment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         CGSize preCommentSize = [previousComment.commentContent boundingRectWithSize:CGSizeMake(300, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
                         UIButton *userNameBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -624,7 +623,7 @@
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+avatar.frame.size.width+5 + 190, 5, 85, 30)];
     timeLabel.font = [UIFont systemFontOfSize:13];
     
-    MessageEntity *entity = [_tweets objectAtIndex:section];
+    MessageEntity *entity = _tweets[section];
     [nameButton setTitle:entity.userName forState:UIControlStateNormal];
     NSUInteger timeInterVal = entity.createdTime;
     NSTimeInterval timeInterValSinceNow = [Common timeIntervalSinceCreatedDate:timeInterVal];
@@ -727,7 +726,7 @@
 - (void)showUserInfoController:(id)sender;
 {
     UIButton *button = (UIButton *)sender;
-    MessageEntity *entity = [_tweets objectAtIndex:button.tag];
+    MessageEntity *entity = _tweets[button.tag];
     Users *user = entity.user;
     UserInfoViewController *userInfoVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"UserInfo"];
     userInfoVC.userID = user.userID;
