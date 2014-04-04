@@ -36,7 +36,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    titleLabel.text = NSLocalizedString(@"Photos", nil);
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self->loadMoreFooter removeFromSuperview];
+    self->loadMoreFooter = nil;
+    self->loadMoreFooter.delegate = nil;
+    self.refreshControl = nil;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  

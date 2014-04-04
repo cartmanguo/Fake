@@ -21,6 +21,7 @@
 {
     LoadMoreTableFooterView *loadMoreFooter;
     EGORefreshTableHeaderView *refreshHeader;
+    UILabel *titleLabel;
 }
 @property (strong, nonatomic) NSMutableArray *tweets;
 @end

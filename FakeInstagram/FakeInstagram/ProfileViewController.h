@@ -18,6 +18,7 @@
     EGORefreshTableHeaderView *refreshHeader;
     BOOL loading;
 }
+@property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) Users *user;
 @property (strong, nonatomic) MessageEntity *entity;
 @property (strong, nonatomic) NSMutableArray *userTweets;

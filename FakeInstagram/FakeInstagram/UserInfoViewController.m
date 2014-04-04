@@ -35,7 +35,9 @@
 
 - (void)viewDidLoad
 {
+    //
     [super viewDidLoad];
+    self.titleLabel.text = self.user.userName;
     self.view.backgroundColor = [UIColor whiteColor];
     self.collectionView.backgroundColor = [UIColor whiteColor];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeClear];
